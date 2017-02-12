@@ -26,7 +26,7 @@ public class WorldController {
 		int height = 32;
 		Pixmap pixmap = createProceduralPixmap(width, height);
 		Texture texture = new Texture(pixmap);
-
+// TODO: you can try this force loop
 //		int i = 0;
 //		
 //		for(Sprite s : testsprites){
