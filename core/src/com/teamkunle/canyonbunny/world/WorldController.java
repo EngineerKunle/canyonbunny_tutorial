@@ -26,21 +26,7 @@ public class WorldController {
 		int height = 32;
 		Pixmap pixmap = createProceduralPixmap(width, height);
 		Texture texture = new Texture(pixmap);
-// TODO: you can try this force loop
-//		int i = 0;
-//		
-//		for(Sprite s : testsprites){
-//			s = new Sprite(texture);
-//			s.setSize(1, 1);
-//			s.setOrigin(s.getWidth() / 2.0f, s.getHeight() / 2.0f);
-//			float randomX = MathUtils.random(-2.0f, 2.0f);
-//	        float randomY = MathUtils.random(-2.0f, 2.0f);
-//	        s.setPosition(randomX, randomY);
-//	        testsprites[i] = s;
-//		}
-//		
-//		i++;
-		
+	
 		for (int i = 0; i < testsprites.length; i++) {
 	         Sprite spr = new Sprite(texture);
 	         spr.setSize(1, 1);
