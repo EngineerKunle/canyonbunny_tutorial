@@ -1,5 +1,8 @@
 package com.teamkunle.canyonbunny.world;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -48,16 +51,43 @@ public class WorldController {
 		pixmap.setColor(1, 1, 0, 1);
 		pixmap.drawLine(0, 0, width, height);
 		pixmap.drawLine(width, 0, 0, height);
-		  // Draw a cyan-colored border around square
+		
+		//random circle
 		pixmap.setColor(0, 1, 1, 1);
-		pixmap.drawRectangle(0, 0, width, height);
+		pixmap.drawCircle(0, 0, 10);
 		return pixmap;
 	}
 
 	public void update(float time){
+		handleDebugInput(time);
 		updateTestObjects(time);
 	}
 	
+	private void handleDebugInput(float time) {
+		if (Gdx.app.getType() != ApplicationType.Desktop)
+			return;
+		
+		//selected sprite control
+		float sprMovespeed = 5 * time;
+		 if (Gdx.input.isKeyPressed(Keys.A)) 
+			 moveSelectedSprite(-sprMovespeed, 0);
+		       
+		 if (Gdx.input.isKeyPressed(Keys.D))
+		         moveSelectedSprite(sprMovespeed, 0);
+		       
+		 if (Gdx.input.isKeyPressed(Keys.W)) 
+			 moveSelectedSprite(0, sprMovespeed);
+		       
+		 if (Gdx.input.isKeyPressed(Keys.S)) 
+			 moveSelectedSprite(0, -sprMovespeed);
+		
+	}
+
+
+	private void moveSelectedSprite(float x, float y) {
+		testsprites[selectedSprite].translate(x, y);;
+	}
+
 	private void updateTestObjects(float deltaTime) {
 	    // Get current rotation from selected sprite
 	    float rotation = testsprites[selectedSprite].getRotation();
