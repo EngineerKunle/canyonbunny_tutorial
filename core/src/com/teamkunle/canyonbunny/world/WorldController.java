@@ -1,6 +1,7 @@
 package com.teamkunle.canyonbunny.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -22,9 +23,9 @@ public class WorldController {
 	private void init() {
 		initTestObjects();
 	}
-	
+		
 	private void initTestObjects() {
-		testsprites = new Sprite[5];
+		testsprites = new Sprite[6];
 		int width = 32;
 		int height = 32;
 		Pixmap pixmap = createProceduralPixmap(width, height);
@@ -40,7 +41,7 @@ public class WorldController {
 	         testsprites[i] = spr;
 	       }
 		
-		selectedSprite = 0;
+		selectedSprite = 1;
 	}
 
 	private Pixmap createProceduralPixmap(int width, int height) {
@@ -69,16 +70,17 @@ public class WorldController {
 		
 		//selected sprite control
 		float sprMovespeed = 5 * time;
-		 if (Gdx.input.isKeyPressed(Keys.A)) 
+		
+		 if (Gdx.input.isKeyPressed(Keys.LEFT)) 
 			 moveSelectedSprite(-sprMovespeed, 0);
 		       
-		 if (Gdx.input.isKeyPressed(Keys.D))
+		 if (Gdx.input.isKeyPressed(Keys.RIGHT))
 		         moveSelectedSprite(sprMovespeed, 0);
 		       
-		 if (Gdx.input.isKeyPressed(Keys.W)) 
+		 if (Gdx.input.isKeyPressed(Keys.UP)) 
 			 moveSelectedSprite(0, sprMovespeed);
 		       
-		 if (Gdx.input.isKeyPressed(Keys.S)) 
+		 if (Gdx.input.isKeyPressed(Keys.DOWN)) 
 			 moveSelectedSprite(0, -sprMovespeed);
 		
 	}
