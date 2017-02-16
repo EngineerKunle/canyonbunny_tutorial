@@ -3,6 +3,7 @@ package com.teamkunle.canyonbunny.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -10,13 +11,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 
-public class WorldController {
+public class WorldController extends InputAdapter{
 	private static final String TAG = WorldController.class.getSimpleName();
 	public Sprite[] testsprites;
 	public int selectedSprite;
 	
 	
 	public WorldController() {
+		Gdx.input.setInputProcessor(this);
 		init();
 	}
 	
@@ -99,5 +101,19 @@ public class WorldController {
 	    rotation %= 360;
 	    // Set new rotation value to selected sprite
 	    testsprites[selectedSprite].setRotation(rotation);
+	}
+	
+	//inherited from class
+	@Override
+	public boolean keyUp(int keycode) {
+		switch (keycode) {
+		case Keys.R:
+			init();
+			Gdx.app.debug(TAG, "Game world resetted");
+		case Keys.SPACE:
+			selectedSprite = (selectedSprite + 1) % testsprites.length;
+			Gdx.app.debug(TAG, "Sprite #" + selectedSprite + " selected");
+		}
+		return true;
 	}
 }
