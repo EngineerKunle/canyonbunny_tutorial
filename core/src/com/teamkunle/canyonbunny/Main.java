@@ -11,6 +11,7 @@ import com.teamkunle.canyonbunny.world.WorldRenderer;
 
 public class Main extends ApplicationAdapter {
 
+	//page 134 
 	private static final String TAG = Main.class.getSimpleName();
 	private WorldController worldcontroller;
 	private WorldRenderer worldrenderer;

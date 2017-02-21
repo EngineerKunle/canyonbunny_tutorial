@@ -11,18 +11,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 
+import helper.CameraHelper;
+
 public class WorldController extends InputAdapter{
 	private static final String TAG = WorldController.class.getSimpleName();
 	public Sprite[] testsprites;
 	public int selectedSprite;
-	
+	public CameraHelper cameraHelper;
 	
 	public WorldController() {
-		Gdx.input.setInputProcessor(this);
 		init();
 	}
 	
 	private void init() {
+		Gdx.input.setInputProcessor(this);
+		cameraHelper = new CameraHelper();
 		initTestObjects();
 	}
 		
@@ -64,6 +67,7 @@ public class WorldController extends InputAdapter{
 	public void update(float time){
 		handleDebugInput(time);
 		updateTestObjects(time);
+		cameraHelper.update(time);
 	}
 	
 	private void handleDebugInput(float time) {
@@ -110,10 +114,22 @@ public class WorldController extends InputAdapter{
 		case Keys.R:
 			init();
 			Gdx.app.debug(TAG, "Game world resetted");
+			break;
 		case Keys.SPACE:
 			selectedSprite = (selectedSprite + 1) % testsprites.length;
+			if (cameraHelper.hasTarget())
+				cameraHelper.setTarget(testsprites[selectedSprite]);
 			Gdx.app.debug(TAG, "Sprite #" + selectedSprite + " selected");
+			break;
+		case Keys.ENTER:
+			cameraHelper.setTarget(cameraHelper.hasTarget() ? null :
+				testsprites[selectedSprite]);
+			Gdx.app.debug(TAG, "Camera follow enable: " + cameraHelper.hasTarget());
+			break;	
+		default:
+			Gdx.app.debug(TAG, "nothing pressed here");
+			break;
 		}
-		return true;
+		return false;
 	}
 }
