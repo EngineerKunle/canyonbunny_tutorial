@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
+import com.teamkunle.canyonbunny.utils.ICalledBackLibgdx;
 
 public class WorldRenderer implements Disposable {
 	private static final String TAG = WorldRenderer.class.getSimpleName();
@@ -12,8 +13,11 @@ public class WorldRenderer implements Disposable {
 	private SpriteBatch sp;
 	private WorldController wc;
 	
-	public WorldRenderer(WorldController wc){
+	private ICalledBackLibgdx testcall;
+	
+	public WorldRenderer(WorldController wc, ICalledBackLibgdx tc){
 		this.wc = wc;
+		this.testcall = tc;
 		init();
 	}
 
@@ -23,6 +27,7 @@ public class WorldRenderer implements Disposable {
 				ConstantUtils.VIEWPORT_HEIGHT);
 		camera.position.set(0,0,0);
 		camera.update();
+		testcall.calledMeBack();
 	}
 	
 	public void render(){

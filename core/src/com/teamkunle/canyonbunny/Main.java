@@ -6,10 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.teamkunle.canyonbunny.utils.ICalledBackLibgdx;
 import com.teamkunle.canyonbunny.world.WorldController;
 import com.teamkunle.canyonbunny.world.WorldRenderer;
 
-public class Main extends ApplicationAdapter {
+public class Main extends ApplicationAdapter implements ICalledBackLibgdx {
 
 	//page 134 
 	private static final String TAG = Main.class.getSimpleName();
@@ -22,7 +23,7 @@ public class Main extends ApplicationAdapter {
 		// make sure to always change log info for release
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		worldcontroller = new WorldController();
-		worldrenderer = new WorldRenderer(worldcontroller);
+		worldrenderer = new WorldRenderer(worldcontroller, this);
 
 		paused = false;
 	}
@@ -56,5 +57,11 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		worldrenderer.resize(width, height);
+	}
+
+	@Override
+	public void calledMeBack() {
+		Gdx.app.debug(TAG, "he called me");
+		
 	}
 }

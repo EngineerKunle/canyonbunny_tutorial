@@ -38,7 +38,7 @@ public class CameraHelper {
 		setZoom(zoom + amount);
 	}
 
-	private void setZoom(float f) {
+	public void setZoom(float f) {
 		this.zoom = MathUtils.clamp(zoom, MAX_ZOOM_IN, MAX_ZOOM_OUT);
 	}
 	
