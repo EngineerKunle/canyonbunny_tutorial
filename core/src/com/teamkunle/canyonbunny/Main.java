@@ -3,6 +3,7 @@ package com.teamkunle.canyonbunny;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,9 +11,11 @@ import com.teamkunle.canyonbunny.utils.ICalledBackLibgdx;
 import com.teamkunle.canyonbunny.world.WorldController;
 import com.teamkunle.canyonbunny.world.WorldRenderer;
 
+import assets.Assets;
+
 public class Main extends ApplicationAdapter implements ICalledBackLibgdx {
 
-	//page 134 
+	//page 158 
 	private static final String TAG = Main.class.getSimpleName();
 	private WorldController worldcontroller;
 	private WorldRenderer worldrenderer;
@@ -22,9 +25,10 @@ public class Main extends ApplicationAdapter implements ICalledBackLibgdx {
 	public void create() {
 		// make sure to always change log info for release
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		
+		Assets.instance.init(new AssetManager());
 		worldcontroller = new WorldController();
 		worldrenderer = new WorldRenderer(worldcontroller, this);
-
 		paused = false;
 	}
 
@@ -35,6 +39,7 @@ public class Main extends ApplicationAdapter implements ICalledBackLibgdx {
 
 	@Override
 	public void resume() {
+		Assets.instance.init(new AssetManager());
 		paused = false;
 	}
 
@@ -52,6 +57,7 @@ public class Main extends ApplicationAdapter implements ICalledBackLibgdx {
 	@Override
 	public void dispose() {
 		worldrenderer.dispose();
+		Assets.instance.dispose();
 	}
 
 	@Override
