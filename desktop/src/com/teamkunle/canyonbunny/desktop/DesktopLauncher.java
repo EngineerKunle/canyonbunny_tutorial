@@ -9,7 +9,7 @@ import com.teamkunle.canyonbunny.utils.ConstantUtils;
 
 public class DesktopLauncher {
 	private static boolean reBuildAtlas = true;
-	private static boolean drawDebugOutline = true;
+	private static boolean drawDebugOutline = false;
 	
 	public static void main (String[] arg) {
 		if (reBuildAtlas) {
@@ -18,8 +18,8 @@ public class DesktopLauncher {
 			settings.maxHeight = ConstantUtils.SETTINGS_HEIGHT;
 			settings.duplicatePadding = false;
 			settings.debug = drawDebugOutline;
-			TexturePacker.process(settings, "assets-raw/images",
-					"../canyonbunny-android/assets/images","canyonbunny.pack");
+			TexturePacker.process(settings, "/Users/EngineerKunle/Documents/libgdx/canyonbunny/desktop/assets-raw/images"
+					,"../assets/images","canyonbunny.pack");
 		}
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = ConstantUtils.GAME_TITLE;
