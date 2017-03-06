@@ -8,7 +8,7 @@ import com.teamkunle.canyonbunny.Main;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
 
 public class DesktopLauncher {
-	private static boolean reBuildAtlas = true;
+	private static boolean reBuildAtlas = false;
 	private static boolean drawDebugOutline = false;
 	
 	public static void main (String[] arg) {

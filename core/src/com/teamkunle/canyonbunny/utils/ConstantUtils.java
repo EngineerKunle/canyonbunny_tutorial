@@ -17,6 +17,9 @@ public class ConstantUtils {
 	public static int GLOBAL_WIDTH = 800;
 	public static int GLOBAL_HEIGHT = 480;
 	
-	/*texture atlas ref*/
+	/*texture atlas reference*/
 	public static String TEXTURE_ATLAS_OBJECTS = "images/canyonbunny.pack.atlas";
+	
+	/*levels to add*/
+	public static final String LEVEL_01 = "levels/level-01.png";
 }
