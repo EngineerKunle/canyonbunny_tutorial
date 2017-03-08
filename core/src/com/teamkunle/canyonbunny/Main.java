@@ -15,7 +15,7 @@ import assets.Assets;
 
 public class Main extends ApplicationAdapter implements ICalledBackLibgdx {
 
-	//page 158 
+	//page 171
 	private static final String TAG = Main.class.getSimpleName();
 	private WorldController worldcontroller;
 	private WorldRenderer worldrenderer;

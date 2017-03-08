@@ -52,13 +52,13 @@ public class Rock extends AbstractGameObject{
 		// Draw middle
 		relX = 0;
 		reg = regMiddle;
-			for (int i = 0; i < length; i++) {
-				sb.draw(reg.getTexture(), position.x + relX, position.y + relY, origin.x, origin.y, dimension.x,
-						dimension.y,
-						scale.x, scale.y, rotation, reg.getRegionX(), 
-						reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
-				relX += dimension.x;
-			}
+		for (int i = 0; i < length; i++) {
+			sb.draw(reg.getTexture(), position.x + relX, position.y + relY, origin.x, origin.y, dimension.x,
+					dimension.y,
+					scale.x, scale.y, rotation, reg.getRegionX(), 
+					reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
+			relX += dimension.x;
+		}
 
 		// Draw right edge
 		reg = regEdge;
