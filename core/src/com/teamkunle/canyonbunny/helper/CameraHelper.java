@@ -1,4 +1,4 @@
-package helper;
+package com.teamkunle.canyonbunny.helper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;

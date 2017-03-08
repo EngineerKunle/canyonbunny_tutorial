@@ -11,9 +11,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.teamkunle.canyonbunny.helper.CameraHelper;
 
 import assets.Assets;
-import helper.CameraHelper;
 
 
 public class WorldController extends InputAdapter {

@@ -1,11 +1,11 @@
-package GameObjects;
+package com.teamkunle.canyonbunny.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.teamkunle.canyonbunny.helper.AbstractGameObject;
 
 import assets.Assets;
-import helper.AbstractGameObject;
 
 public class Mountains extends AbstractGameObject{
 	
