@@ -10,6 +10,8 @@ import com.teamkunle.canyonbunny.gameobjects.Rock;
 import com.teamkunle.canyonbunny.helper.AbstractGameObject;
 
 public class Level {
+	//page 179
+	
 	public static final String TAG = Level.class.getSimpleName();
 	//objects
 	public Array<Rock> rocks;
@@ -29,14 +31,13 @@ public class Level {
 			color = r << 24 | g << 16 | b << 8 | 0xff;
 		}
 		
-		public boolean sameColor(int color){
+		public boolean sameColor (int color) {
 			return this.color == color;
 		}
 		
 		public int getColor(){
 			return color;
 		}
-		
 	}
 	
 	public Level(String filename) {
@@ -44,12 +45,57 @@ public class Level {
 	}
 
 	private void init(String filename){
+		//rock objects
 		rocks = new Array<Rock>();
+		
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
 		int lastPixel = -1;
 		for(int pixelY = 0; pixelY < pixmap.getHeight(); pixelY++){
-			for(int pixelX = 0; pixelX< pixmap.getWidth(); pixelX++ ){
-				AbstractGameObject ogj = null;
+			for(int pixelX = 0; pixelX < pixmap.getWidth(); pixelX++){
+				AbstractGameObject obj = null;
+				float offsetHeight = 0;
+				float baseHeight = pixmap.getHeight() - pixelY;
+				int currentPixel = pixmap.getPixel(pixelX, pixelY);
+				if (BLOCK_TYPE.EMPTY.equals(currentPixel)){
+					//do nothing for now
+				}
+				
+				// rock
+				else if (BLOCK_TYPE.ROCK.sameColor(currentPixel)) {
+					if (lastPixel != currentPixel) {
+						obj = new Rock();
+						float heightIncreaseFactor = 0.25f;
+						offsetHeight = -2.5f;
+						obj.position.set(pixelX, baseHeight * obj.dimension.y * heightIncreaseFactor + offsetHeight);
+						rocks.add((Rock)obj);
+					} else {
+						rocks.get(rocks.size - 1).increaseLength(1);
+					}
+				}
+				
+				// player spawn point
+				else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
+				}
+				// feather
+				else if (BLOCK_TYPE.ITEM_FEATHER.sameColor(currentPixel)) {
+				}
+				// gold coin
+				else if (BLOCK_TYPE.ITEM_GOLD_COIN.sameColor(currentPixel)) {
+				}
+				// unknown object/pixel color
+				else {
+					// red color channel
+					int r = 0xff & (currentPixel >>> 24);
+					// green color channel
+					int g = 0xff & (currentPixel >>> 16);
+					// blue color channel
+					int b = 0xff & (currentPixel >>> 8);
+					// alpha channel
+					int a = 0xff & currentPixel;
+					Gdx.app.error(TAG, "Unknown object at x<" + pixelX + "> y<" + pixelY + ">: r<" + r + "> g<" + g + "> b<" + b
+						+ "> a<" + a + ">");
+				}
+				lastPixel = currentPixel;
 			}
 		}
 		
