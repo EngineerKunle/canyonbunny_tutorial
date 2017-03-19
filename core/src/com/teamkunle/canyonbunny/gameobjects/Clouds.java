@@ -5,9 +5,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.helper.AbstractGameObject;
-
-import assets.Assets;
 
 public class Clouds extends AbstractGameObject{
 	private float length;

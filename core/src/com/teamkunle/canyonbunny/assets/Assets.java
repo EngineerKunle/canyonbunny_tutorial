@@ -1,4 +1,4 @@
-package assets;
+package com.teamkunle.canyonbunny.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;

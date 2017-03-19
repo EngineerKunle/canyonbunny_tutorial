@@ -22,4 +22,11 @@ public class ConstantUtils {
 	
 	/*levels to add*/
 	public static final String LEVEL_01 = "levels/level-01.png";
+	
+	/*Gui width and height*/
+	public static final float VIEWPORT_GUI_WIDTH = 800.0f;
+	public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
+	
+	/*Amount of lives begin*/
+	public static final int LIVES_START = 3;
 }

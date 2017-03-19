@@ -10,7 +10,7 @@ import com.teamkunle.canyonbunny.utils.ICalledBackLibgdx;
 public class WorldRenderer implements Disposable {
 	private static final String TAG = WorldRenderer.class.getSimpleName();
 	private OrthographicCamera camera;
-	private SpriteBatch sp;
+	private SpriteBatch spriteBatch;
 	private WorldController wc;
 	
 	private ICalledBackLibgdx testcall;
@@ -22,7 +22,7 @@ public class WorldRenderer implements Disposable {
 	}
 
 	private void init(){
-		sp = new SpriteBatch();
+		spriteBatch = new SpriteBatch();
 		camera = new OrthographicCamera(ConstantUtils.VIEWPORT_WIDTH, 
 				ConstantUtils.VIEWPORT_HEIGHT);
 		camera.position.set(0,0,0);
@@ -31,18 +31,15 @@ public class WorldRenderer implements Disposable {
 	}
 	
 	public void render(){
-		renderTest();
+		renderWorld(spriteBatch);
 	}
 	
-	
-	private void renderTest() {
+	private void renderWorld(SpriteBatch sb){
 		wc.cameraHelper.applyTo(camera);
-		sp.setProjectionMatrix(camera.combined);
-		sp.begin();
-		for(Sprite sprite : wc.testsprites){
-			sprite.draw(sp);
-		}	
-		sp.end();
+		sb.setProjectionMatrix(camera.combined);
+		sb.begin();
+		wc.level.render(sb);
+		sb.end();
 	}
 
 	public void resize(int width, int height){
@@ -52,7 +49,7 @@ public class WorldRenderer implements Disposable {
 
 	@Override
 	public void dispose() {
-		sp.dispose();
+		spriteBatch.dispose();
 	}
 
 }

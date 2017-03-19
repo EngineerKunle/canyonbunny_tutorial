@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.teamkunle.canyonbunny.gameobjects.Clouds;
 import com.teamkunle.canyonbunny.gameobjects.Mountains;
 import com.teamkunle.canyonbunny.gameobjects.Rock;
+import com.teamkunle.canyonbunny.gameobjects.WaterOverlay;
 import com.teamkunle.canyonbunny.helper.AbstractGameObject;
 
 public class Level {
@@ -17,6 +18,7 @@ public class Level {
 	public Array<Rock> rocks;
 	public Clouds clouds;
 	public Mountains mountains;
+	public WaterOverlay waterOverlay;
 	
 	public enum BLOCK_TYPE {
 		EMPTY(0, 0, 0), //BLACK
@@ -99,7 +101,27 @@ public class Level {
 			}
 		}
 		
+		//populate 
+		clouds = new Clouds(pixmap.getWidth());
+		clouds.position.set(0, 2);
+		mountains = new Mountains(pixmap.getWidth());
+		mountains.position.set(-1,-1);
+		waterOverlay = new WaterOverlay(pixmap.getWidth());
+		waterOverlay.position.set(0, -3.75f);
+		
+		pixmap.dispose();
+		Gdx.app.debug(TAG, "level '" + filename + "' loaded");
 	}
-	public void render(SpriteBatch sp){}
+	
+	//draws each object
+	public void render(SpriteBatch sb){
+		
+		mountains.render(sb);
+		for(Rock rock : rocks){
+			rock.render(sb);
+		}
+		waterOverlay.render(sb);
+		clouds.render(sb);
+	}
 	
 }

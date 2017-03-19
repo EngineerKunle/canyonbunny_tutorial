@@ -3,9 +3,8 @@ package com.teamkunle.canyonbunny.gameobjects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.helper.AbstractGameObject;
-
-import assets.Assets;
 
 public class Mountains extends AbstractGameObject{
 	
