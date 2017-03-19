@@ -8,8 +8,10 @@ import com.teamkunle.canyonbunny.utils.ConstantUtils;
 import com.teamkunle.canyonbunny.utils.ICalledBackLibgdx;
 
 public class WorldRenderer implements Disposable {
+	//page 189
 	private static final String TAG = WorldRenderer.class.getSimpleName();
 	private OrthographicCamera camera;
+	private OrthographicCamera cameraGUI;
 	private SpriteBatch spriteBatch;
 	private WorldController wc;
 	

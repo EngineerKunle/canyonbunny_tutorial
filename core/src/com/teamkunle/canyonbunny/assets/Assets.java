@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.utils.Disposable;
@@ -23,6 +24,7 @@ public class Assets implements Disposable, AssetErrorListener {
 	public AssetGoldCoin goldCoin;
 	public AssetFeather feather;
 	public AssetLevelDecoration levelDecoration;
+	public AssetFonts assetsFonts;
 
 	// singleton: prevent instantiation from other classes
 	private Assets () {
@@ -79,6 +81,30 @@ public class Assets implements Disposable, AssetErrorListener {
 			waterOverlay = atlas.findRegion("water_overlay");
 		}
 	}
+	
+	public class AssetFonts{
+		public final BitmapFont defaultSmall;
+		public final BitmapFont defaultNormal;
+		public final BitmapFont defaultBig;
+		
+		public AssetFonts() {
+			// create three fonts using Libgdx's 15px bitmap font
+			defaultSmall = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+			defaultNormal = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+			defaultBig = new BitmapFont(Gdx.files.internal("images/arial-15.fnt"), true);
+			
+			// set font sizes
+			defaultSmall.getData().setScale(0.75f);
+			defaultNormal.getData().setScale(1.0f);
+			defaultBig.getData().setScale(2.0f);
+			
+			//enable linear texture
+			defaultSmall.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+			defaultNormal.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+			defaultBig.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		}
+	}
+
 
 	public void init (AssetManager assetManager) {
 		this.assetManager = assetManager;
@@ -102,6 +128,7 @@ public class Assets implements Disposable, AssetErrorListener {
 		}
 
 		// create game resource objects
+		assetsFonts = new AssetFonts();
 		bunny = new AssetBunny(atlas);
 		rock = new AssetRock(atlas);
 		goldCoin = new AssetGoldCoin(atlas);
@@ -112,8 +139,10 @@ public class Assets implements Disposable, AssetErrorListener {
 	@Override
 	public void dispose () {
 		assetManager.dispose();
+		assetsFonts.defaultBig.dispose();
+		assetsFonts.defaultNormal.dispose();
+		assetsFonts.defaultSmall.dispose();
 	}
-
 
 	@Override
 	public void error(AssetDescriptor asset, Throwable throwable) {
