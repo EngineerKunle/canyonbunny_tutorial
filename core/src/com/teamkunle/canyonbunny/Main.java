@@ -5,8 +5,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.utils.ICalledBackLibgdx;
 import com.teamkunle.canyonbunny.world.WorldController;
@@ -67,6 +65,5 @@ public class Main extends ApplicationAdapter implements ICalledBackLibgdx {
 	@Override
 	public void calledMeBack() {
 		Gdx.app.debug(TAG, "he called me");
-		
 	}
 }
