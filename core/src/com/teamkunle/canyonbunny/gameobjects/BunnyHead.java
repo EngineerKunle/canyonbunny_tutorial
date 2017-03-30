@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.helper.AbstractGameObject;
+import com.teamkunle.canyonbunny.utils.ConstantUtils;
 
 /**
  * Created by EngineerKunle on 30/03/2017.
@@ -58,9 +59,21 @@ public class BunnyHead extends AbstractGameObject {
             if (timeLeftFeatherPowerup < 0) {
                 //disable power-up
                 timeLeftFeatherPowerup = 0;
-                setFeatherPowerup(false);
+                setFeatherPowerUp(false);
             }
         }
+    }
+
+    @Override
+    protected void updateMotionX(float deltaTime) {
+        super.updateMotionX(deltaTime);
+        //TODO: finish code here
+    }
+
+    @Override
+    protected void updateMotionY(float deltaTime) {
+        super.updateMotionY(deltaTime);
+        //TODO: finish code here
     }
 
     private void init() {
@@ -85,7 +98,14 @@ public class BunnyHead extends AbstractGameObject {
         timeLeftFeatherPowerup = 0;
     }
 
-    public void setFeatherPowerup(boolean pickedUp) {
+    public void setFeatherPowerUp(boolean pickedUp) {
+        hasFeatherPowerup = pickedUp;
+        if (pickedUp) {
+            timeLeftFeatherPowerup = ConstantUtils.ITEM_FEATHER_POWERUP_DURATION;
+        }
+    }
 
+    public boolean hasFeatherPowerUp() {
+        return hasFeatherPowerup && timeLeftFeatherPowerup > 0;
     }
 }
