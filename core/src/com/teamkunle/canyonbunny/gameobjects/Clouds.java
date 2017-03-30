@@ -13,7 +13,7 @@ public class Clouds extends AbstractGameObject{
 	private Array<TextureRegion> regClouds;
 	private Array<Cloud> clouds;
 	
-	private class Cloud extends AbstractGameObject{
+	private class Cloud extends AbstractGameObject {
 		private TextureRegion regCloud;
 		
 		public Cloud() {
