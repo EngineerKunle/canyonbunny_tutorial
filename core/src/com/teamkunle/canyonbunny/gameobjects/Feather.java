@@ -41,4 +41,5 @@ public class Feather extends AbstractGameObject {
     public int getScore() {
         return SCORE;
     }
+
 }
