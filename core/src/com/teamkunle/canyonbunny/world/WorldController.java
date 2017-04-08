@@ -1,17 +1,8 @@
 package com.teamkunle.canyonbunny.world;
 
-import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
-import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.helper.CameraHelper;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
 
@@ -38,6 +29,7 @@ public class WorldController extends InputAdapter {
 	public void update(float time){
 		handleDebugInput(time);
 		cameraHelper.update(time);
+		level.update(time);
 	}
 	
 	private void handleDebugInput(float time) {
