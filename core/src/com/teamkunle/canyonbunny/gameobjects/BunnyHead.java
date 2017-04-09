@@ -166,7 +166,6 @@ public class BunnyHead extends AbstractGameObject {
                 }
                 break;
             case FALLING:// Falling down
-                break;
             case JUMP_FALLING:
                 if (jumpKeyPressed && hasFeatherPowerup) {
                     timeJumping = JUMP_TIME_OFFSET_FLYING;

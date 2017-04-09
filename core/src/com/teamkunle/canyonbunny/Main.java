@@ -5,11 +5,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Rectangle;
 import com.teamkunle.canyonbunny.assets.Assets;
-import com.teamkunle.canyonbunny.gameobjects.Feather;
-import com.teamkunle.canyonbunny.gameobjects.GoldCoin;
-import com.teamkunle.canyonbunny.gameobjects.Rock;
 import com.teamkunle.canyonbunny.utils.ICalledBackLibgdx;
 import com.teamkunle.canyonbunny.world.WorldController;
 import com.teamkunle.canyonbunny.world.WorldRenderer;
@@ -21,11 +17,6 @@ public class Main extends ApplicationAdapter implements ICalledBackLibgdx {
 	private WorldController worldcontroller;
 	private WorldRenderer worldrenderer;
 	private boolean paused;
-
-	//Rectangles for collisions
-	private Rectangle r1 = new Rectangle();
-	private Rectangle r2 = new Rectangle();
-
 
 	@Override
 	public void create() {
@@ -75,9 +66,4 @@ public class Main extends ApplicationAdapter implements ICalledBackLibgdx {
 	public void calledMeBack() {
 		Gdx.app.debug(TAG, "he called me");
 	}
-
-	//Test collisions
-	private void onCollisonBunnyHeadWithRock(Rock rock) {}
-	private void onCollisonBunnyHeadWithGoldCoin(GoldCoin goldCoin) {}
-	private void onCollisonBunnyHeadWithFeather(Feather feather) {}
 }
