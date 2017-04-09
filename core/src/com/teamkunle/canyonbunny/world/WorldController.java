@@ -1,5 +1,6 @@
 package com.teamkunle.canyonbunny.world;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -37,16 +38,51 @@ public class WorldController extends InputAdapter {
 
 	public void update(float time){
 		handleDebugInput(time);
-		cameraHelper.update(time);
 		level.update(time);
+		testCollisions();
+		cameraHelper.update(time);
 	}
 	
-	private void handleDebugInput(float time) {
+	private void handleDebugInput(float deltaTime) {
+		if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
+
+		if (!cameraHelper.hasTarget(level.bunnyHead)) {
+			float camMoveSpeed = 5 * deltaTime;
+			float camMoveSpeedAccelerationFactor = 5;
+			if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) camMoveSpeed *=  camMoveSpeedAccelerationFactor;
+			if (Gdx.input.isKeyPressed(Keys.LEFT)) moveCamera(-camMoveSpeed, 0);
+			if (Gdx.input.isKeyPressed(Keys.RIGHT)) moveCamera(camMoveSpeed, 0);
+			if (Gdx.input.isKeyPressed(Keys.UP)) moveCamera(0, camMoveSpeed);
+			if (Gdx.input.isKeyPressed(Keys.DOWN)) moveCamera(0, -camMoveSpeed);
+			if (Gdx.input.isKeyPressed(Keys.BACKSPACE)) cameraHelper.setPosition(0, 0);
+		}
+
+		//TODO : finish code
 	}
-	
+
+	private void handleInputGame(float time) {
+		if (cameraHelper.hasTarget(level.bunnyHead)) {
+			if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+				level.bunnyHead.velocity.x =- level.bunnyHead.terminalVelocity.x;
+			} else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+				level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
+			} else {
+				if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
+					level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
+				}
+			}
+
+			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE))
+				level.bunnyHead.setJumping(true);
+			else
+				level.bunnyHead.setJumping(false);
+		}
+	}
+
 	private void initLevel(){
 		score = 0;
 		level = new Level(ConstantUtils.LEVEL_01);
+		cameraHelper.setTarget(level.bunnyHead);
 	}
 	
 	private void moveCamera(float x, float y){
@@ -93,17 +129,29 @@ public class WorldController extends InputAdapter {
 				bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.x;
 				bunnyHead.jumpState = BunnyHead.JUMP_STATE.GROUNDED;
 				break;
-
+			case JUMP_RISING:
+				bunnyHead.position.y = rock.position.y + bunnyHead.bounds.height + bunnyHead.origin.y;
+				break;
 		}
 	}
-	private void onCollisonBunnyHeadWithGoldCoin(GoldCoin goldCoin) {}
-	private void onCollisonBunnyHeadWithFeather(Feather feather) {}
+	private void onCollisonBunnyHeadWithGoldCoin(GoldCoin goldCoin) {
+		goldCoin.collected = true;
+		score += goldCoin.getScore();
+		Gdx.app.log(TAG, "Gold coin collected");
+	}
+	private void onCollisonBunnyHeadWithFeather(Feather feather) {
+		feather.collected = true;
+		score += feather.getScore();
+		level.bunnyHead.setFeatherPowerUp(true);
+		Gdx.app.log(TAG, "feather collected");
+	}
 
 	private void testCollisions() {
 		r1.set(level.bunnyHead.position.x, level.bunnyHead.position.y, level.bunnyHead.bounds.width, level.bunnyHead.bounds.height);
 
 		//here we can test collisions
 		for (Rock rock : level.rocks) {
+			r2.set(rock.position.x, rock.position.y, rock.bounds.width, rock.bounds.height);
 			if (!r1.overlaps(r2)) continue;
 			onCollisonBunnyHeadWithRock(rock);
 			//IMPORTANT: must do all collisions for valid edge testing
