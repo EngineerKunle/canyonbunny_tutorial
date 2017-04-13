@@ -57,7 +57,13 @@ public class WorldController extends InputAdapter {
 			if (Gdx.input.isKeyPressed(Keys.BACKSPACE)) cameraHelper.setPosition(0, 0);
 		}
 
-		//TODO : finish code
+		//camera zoom
+		float camZoomSpeed = 1 * deltaTime;
+		float camZoomSpeedAccelerationFactor = 5;
+		if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) camZoomSpeed *= camZoomSpeedAccelerationFactor;
+		if (Gdx.input.isKeyPressed(Keys.COMMA)) cameraHelper.addZoom(camZoomSpeed);
+		if (Gdx.input.isKeyPressed(Keys.PERIOD)) cameraHelper.addZoom(-camZoomSpeed);
+		if (Gdx.input.isKeyPressed(Keys.SLASH)) cameraHelper.addZoom(1);
 	}
 
 	private void handleInputGame(float time) {
@@ -93,6 +99,7 @@ public class WorldController extends InputAdapter {
 
 	
 	//inherited from class
+	//TODO : page 218
 	@Override
 	public boolean keyUp(int keycode) {
 		switch (keycode) {
