@@ -28,6 +28,24 @@ public class WorldController extends InputAdapter {
 	public WorldController() {
 		init();
 	}
+
+	//inherited from class
+	@Override
+	public boolean keyUp(int keycode) {
+		switch (keycode) {
+			case Keys.R:
+				init();
+				Gdx.app.debug(TAG, "Game world resetted");
+				break;
+			case Keys.ENTER:
+				cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.bunnyHead);
+				Gdx.app.debug(TAG, "Camera follow: " + cameraHelper.hasTarget());
+			default:
+				Gdx.app.debug(TAG, "nothing pressed here");
+				break;
+		}
+		return false;
+	}
 	
 	private void init() {
 		Gdx.input.setInputProcessor(this);
@@ -38,6 +56,7 @@ public class WorldController extends InputAdapter {
 
 	public void update(float time){
 		handleDebugInput(time);
+		handleInputGame(time);
 		level.update(time);
 		testCollisions();
 		cameraHelper.update(time);
@@ -97,22 +116,6 @@ public class WorldController extends InputAdapter {
 		cameraHelper.setPosition(x, y);
 	}
 
-	
-	//inherited from class
-	//TODO : page 218
-	@Override
-	public boolean keyUp(int keycode) {
-		switch (keycode) {
-		case Keys.R:
-			init();
-			Gdx.app.debug(TAG, "Game world resetted");
-			break;	
-		default:
-			Gdx.app.debug(TAG, "nothing pressed here");
-			break;
-		}
-		return false;
-	}
 	//Test collisions
 	private void onCollisonBunnyHeadWithRock(Rock rock) {
 		BunnyHead bunnyHead = level.bunnyHead;
