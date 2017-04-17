@@ -15,6 +15,7 @@ import com.teamkunle.canyonbunny.utils.ConstantUtils;
 
 public class WorldController extends InputAdapter {
 	private static final String TAG = WorldController.class.getSimpleName();
+	private float timeLeftGameOverDelay;
 	public CameraHelper cameraHelper;
 	
 	public int lives;
@@ -51,17 +52,32 @@ public class WorldController extends InputAdapter {
 		Gdx.input.setInputProcessor(this);
 		cameraHelper = new CameraHelper();
 		lives = ConstantUtils.LIVES_START;
+		timeLeftGameOverDelay = 0;
 		initLevel();
 	}
 
 	public void update(float time){
 		handleDebugInput(time);
-		handleInputGame(time);
+		if (isGameOver()) {
+			timeLeftGameOverDelay -= time;
+			if (timeLeftGameOverDelay < 0 ) init();
+		} else {
+			handleInputGame(time);
+		}
 		level.update(time);
 		testCollisions();
 		cameraHelper.update(time);
+
+		if (!isGameOver() && isPlayerInWater()) {
+			lives--;
+			if (isGameOver())
+				timeLeftGameOverDelay = ConstantUtils.TIME_DELAY_GAME_OVER;
+			else
+				initLevel();
+		}
+
 	}
-	
+
 	private void handleDebugInput(float deltaTime) {
 		if (Gdx.app.getType() != Application.ApplicationType.Desktop) return;
 
@@ -182,5 +198,13 @@ public class WorldController extends InputAdapter {
 			onCollisonBunnyHeadWithGoldCoin(goldCoin);
 			break;
 		}
+	}
+
+	public boolean isGameOver() {
+		return lives < 0;
+	}
+
+	public boolean isPlayerInWater() {
+		return level.bunnyHead.position.y < -5;
 	}
 }

@@ -69,7 +69,7 @@ public class BunnyHead extends AbstractGameObject {
         }
 
         if (timeLeftFeatherPowerup > 0) {
-            timeLeftFeatherPowerup -= 0;
+            timeLeftFeatherPowerup -= time;
             if (timeLeftFeatherPowerup < 0) {
                 //disable power-up
                 timeLeftFeatherPowerup = 0;
@@ -81,7 +81,6 @@ public class BunnyHead extends AbstractGameObject {
     @Override
     protected void updateMotionX(float deltaTime) {
         super.updateMotionX(deltaTime);
-        //TODO: finish code here
     }
 
     @Override

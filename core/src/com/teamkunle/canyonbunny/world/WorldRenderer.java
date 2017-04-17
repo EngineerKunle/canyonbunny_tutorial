@@ -3,12 +3,10 @@ package com.teamkunle.canyonbunny.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
-import com.teamkunle.canyonbunny.utils.ICalledBackLibgdx;
 
 public class WorldRenderer implements Disposable {
 	//page 189
@@ -17,12 +15,9 @@ public class WorldRenderer implements Disposable {
 	private OrthographicCamera cameraGUI;
 	private SpriteBatch spriteBatch;
 	private WorldController wc;
-	
-	private ICalledBackLibgdx testcall;
-	
-	public WorldRenderer(WorldController wc, ICalledBackLibgdx tc){
+
+	public WorldRenderer(WorldController wc){
 		this.wc = wc;
-		this.testcall = tc;
 		init();
 	}
 
@@ -37,7 +32,6 @@ public class WorldRenderer implements Disposable {
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true);
 		cameraGUI.update();
-		testcall.calledMeBack();
 	}
 	
 	public void render(){
@@ -111,11 +105,44 @@ public class WorldRenderer implements Disposable {
 		// draw collected gold coins icon + text (anchored to top left edge)
 		renderGuiScore(batch);
 		// draw extra lives icon + text (anchored to top right edge)
+		renderGUIFeatherPowerUp(batch);
+
 		renderGuiExtraLive(batch);
 		// draw FPS text (anchored to bottom right edge)
 		renderGuiFpsCounter(batch);
 
+		//draw game over screen
+		renderGUIGameOverMessage(batch);
+
 		batch.end();
+	}
+
+	private void renderGUIGameOverMessage(SpriteBatch sb) {
+		float x = cameraGUI.viewportWidth / 2;
+		float y = cameraGUI.viewportHeight / 2;
+		if (wc.isGameOver()) {
+			BitmapFont fontGameOver = Assets.instance.assetsFonts.defaultBig;
+			fontGameOver.setColor(1, 0.75f, 0.25f, 1);
+			fontGameOver.draw(sb, "Game Over", x, y);
+			fontGameOver.setColor(1, 1, 1, 1);
+		}
+	}
+
+	private void renderGUIFeatherPowerUp(SpriteBatch sb){
+		float x = -15;
+		float y = 100;
+
+		float timeLeftFeatherPowerUp = wc.level.bunnyHead.timeLeftFeatherPowerup;
+		if (timeLeftFeatherPowerUp > 0 ) {
+			if (timeLeftFeatherPowerUp < 4) {
+				if (((int)(timeLeftFeatherPowerUp * 5) % 2) != 0) {
+					sb.setColor(1, 1, 1, 0.5f);
+				}
+			}
+			sb.draw(Assets.instance.feather.feather, x, y, 50, 50, 100, 100, 0.35f, -0.35f, 0);
+    			sb.setColor(1, 1, 1, 0.5f);
+			Assets.instance.assetsFonts.defaultSmall.draw(sb, "" + (int)timeLeftFeatherPowerUp, x + 60, y + 57);
+		}
 	}
 
 	@Override

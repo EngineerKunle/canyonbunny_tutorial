@@ -22,6 +22,8 @@ public class CameraHelper {
 		if (!hasTarget()) return;
 		position.x = target.position.x + target.origin.x;
 		position.y = target.position.y + target.origin.y;
+
+		position.y = Math.max(-1.0f, position.y);
 	}
 	
 	public void setPosition(float x, float y){
