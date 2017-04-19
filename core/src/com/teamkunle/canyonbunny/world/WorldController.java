@@ -1,6 +1,7 @@
 package com.teamkunle.canyonbunny.world;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -10,12 +11,14 @@ import com.teamkunle.canyonbunny.gameobjects.Feather;
 import com.teamkunle.canyonbunny.gameobjects.GoldCoin;
 import com.teamkunle.canyonbunny.gameobjects.Rock;
 import com.teamkunle.canyonbunny.helper.CameraHelper;
+import com.teamkunle.canyonbunny.screens.MenuScreen;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
 
 
 public class WorldController extends InputAdapter {
 	private static final String TAG = WorldController.class.getSimpleName();
 	private float timeLeftGameOverDelay;
+	private Game game;
 	public CameraHelper cameraHelper;
 	
 	public int lives;
@@ -26,7 +29,8 @@ public class WorldController extends InputAdapter {
 	private Rectangle r1 = new Rectangle();
 	private Rectangle r2 = new Rectangle();
 	
-	public WorldController() {
+	public WorldController(Game game) {
+		this.game = game;
 		init();
 	}
 
@@ -41,6 +45,11 @@ public class WorldController extends InputAdapter {
 			case Keys.ENTER:
 				cameraHelper.setTarget(cameraHelper.hasTarget() ? null : level.bunnyHead);
 				Gdx.app.debug(TAG, "Camera follow: " + cameraHelper.hasTarget());
+				break;
+			case Keys.BACK:
+			case Keys.ESCAPE:
+				backToMenu();
+				break;
 			default:
 				Gdx.app.debug(TAG, "nothing pressed here");
 				break;
@@ -60,7 +69,7 @@ public class WorldController extends InputAdapter {
 		handleDebugInput(time);
 		if (isGameOver()) {
 			timeLeftGameOverDelay -= time;
-			if (timeLeftGameOverDelay < 0 ) init();
+			if (timeLeftGameOverDelay < 0 ) backToMenu();
 		} else {
 			handleInputGame(time);
 		}
@@ -206,5 +215,9 @@ public class WorldController extends InputAdapter {
 
 	public boolean isPlayerInWater() {
 		return level.bunnyHead.position.y < -5;
+	}
+
+	private void backToMenu() {
+		game.setScreen(new MenuScreen(game));
 	}
 }

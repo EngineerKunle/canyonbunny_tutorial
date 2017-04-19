@@ -15,11 +15,13 @@ public class GameScreen extends AbstractGameScreen {
     private static final String TAG = GameScreen.class.getSimpleName();
     private WorldController worldController;
     private WorldRenderer worldRenderer;
+    private Game game;
 
     private boolean paused;
 
     public GameScreen(Game game) {
         super(game);
+        this.game = game;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void show() {
-        worldController = new WorldController();
+        worldController = new WorldController(game);
         worldRenderer = new WorldRenderer(worldController);
         Gdx.input.setCatchBackKey(true);
     }
