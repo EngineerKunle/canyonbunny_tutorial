@@ -122,8 +122,6 @@ public class Level {
 					int b = 0xff & (currentPixel >>> 8);
 					// alpha channel
 					int a = 0xff & currentPixel;
-//					Gdx.app.error(TAG, "Unknown object at x<" + pixelX + "> y<" + pixelY + ">: r<" + r + "> g<" + g + "> b<" + b
-//						+ "> a<" + a + ">");
 				}
 				lastPixel = currentPixel;
 			}
