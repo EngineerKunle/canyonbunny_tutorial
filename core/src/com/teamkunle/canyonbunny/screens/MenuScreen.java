@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -17,7 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.teamkunle.canyonbunny.helper.CharacterSkinHelper;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
+import com.teamkunle.canyonbunny.utils.GamePreferencesUtils;
 
 /**
  * Created by EngineerKunle on 17/04/2017.
@@ -37,11 +40,13 @@ public class MenuScreen extends AbstractGameScreen {
 
     private TextButton btnWinOptSave, btnWinOptCancel;
 
-    private CheckBox chkSound, chkShowFpsCounter;
+    private CheckBox chkSound, chkShowFpsCounter, checkMusic;
 
-    private Slider sldSound;
+    private Slider sldSound, sldMusic;
 
-//    private SelectBox<CharacterSkin> selCharSkin;
+    private SelectBox<CharacterSkinHelper> selCharSkin;
+
+    private Skin skinLibgdx;
 
     //debug
     private final float DEBUG_REBUILD_INTERVAL = 5.0f;
@@ -78,6 +83,7 @@ public class MenuScreen extends AbstractGameScreen {
 
     @Override
     public void show() {
+        // TODO: page 254
         stage = new Stage(new StretchViewport(ConstantUtils.VIEWPORT_WIDTH,
                 ConstantUtils.VIEWPORT_GUI_HEIGHT));
         Gdx.input.setInputProcessor(stage);
@@ -92,6 +98,47 @@ public class MenuScreen extends AbstractGameScreen {
 
     @Override
     public void pause() {
+    }
+
+    //load settings
+    private void loadSettings() {
+        GamePreferencesUtils prefs = GamePreferencesUtils.instance;
+        prefs.load();
+        chkSound.setChecked(prefs.sound);
+        sldSound.setValue(prefs.volSound);
+        checkMusic.setChecked(prefs.music);
+        sldMusic.setValue(prefs.volMusic);
+        selCharSkin.setSelectedIndex(prefs.charSkin);
+        onCharSkinSelected(prefs.charSkin);
+        chkShowFpsCounter.setChecked(prefs.showFpsCounter);
+    }
+
+    //save settings
+    private void saveSettings() {
+        GamePreferencesUtils prefs = GamePreferencesUtils.instance;
+        prefs.sound = chkSound.isChecked();
+        prefs.volSound = sldSound.getValue();
+        prefs.music = checkMusic.isChecked();
+        prefs.volMusic = sldMusic.getValue();
+        prefs.charSkin = selCharSkin.getSelectedIndex();
+        prefs.showFpsCounter = chkShowFpsCounter.isChecked();
+        prefs.save();
+    }
+
+    private void onCharSkinSelected(int index) {
+        CharacterSkinHelper skin = CharacterSkinHelper.values()[index];
+        imgCharSkin.setColor(skin.getColor());
+    }
+
+    private void onSavedClicked() {
+        saveSettings();
+        onCancelClicked();
+    }
+
+    private void onCancelClicked() {
+        btnMenu.setVisible(true);
+        btnOptions.setVisible(true);
+        winOptions.setVisible(false);
     }
 
     private void reBuildStage() {
@@ -126,7 +173,6 @@ public class MenuScreen extends AbstractGameScreen {
     private Table buildControlsLayer() {
         Table layer = new Table();
         layer.right().bottom();
-
         //player bottom
         btnMenu = new Button(skinCanyonBunny, "play");
         layer.add(btnMenu);
