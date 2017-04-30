@@ -16,11 +16,11 @@ public class ConstantUtils {
 	/*configuration height and width*/
 	public static int GLOBAL_WIDTH = 800;
 	public static int GLOBAL_HEIGHT = 480;
-	
-	/*texture atlas reference*/
-	public static String TEXTURE_ATLAS_OBJECTS = "images/canyonbunny.pack.atlas";
-	public static String TEXTURE_ATLAS_UI = "images/canyonbunny-ui.pack";
-	public static String TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
+
+	// Location of description file for texture atlas
+	public static final String TEXTURE_ATLAS_OBJECTS = "images/canyonbunny.pack";
+	public static final String TEXTURE_ATLAS_UI = "images/canyonbunny-ui.pack";
+	public static final String TEXTURE_ATLAS_LIBGDX_UI = "images/uiskin.atlas";
 
 	/*Location of description file for skins*/
 	public static final String SKIN_LIBGDX_UI = "images/uiskin.json";

@@ -3,6 +3,7 @@ package com.teamkunle.canyonbunny.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.teamkunle.canyonbunny.utils.GamePreferencesUtils;
 import com.teamkunle.canyonbunny.world.WorldController;
 import com.teamkunle.canyonbunny.world.WorldRenderer;
 
@@ -26,7 +27,7 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void render(float dt) {
-
+        //TODO page 261
         if (!paused) {
             worldController.update(dt);
         }
@@ -43,6 +44,7 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void show() {
+        GamePreferencesUtils.instance.load();
         worldController = new WorldController(game);
         worldRenderer = new WorldRenderer(worldController);
         Gdx.input.setCatchBackKey(true);
