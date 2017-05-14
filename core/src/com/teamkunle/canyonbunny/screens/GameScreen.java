@@ -27,7 +27,6 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void render(float dt) {
-        //TODO page 261
         if (!paused) {
             worldController.update(dt);
         }

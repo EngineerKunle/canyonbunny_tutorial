@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
+import com.teamkunle.canyonbunny.utils.GamePreferencesUtils;
 
 public class WorldRenderer implements Disposable {
 	//page 189
@@ -109,6 +110,8 @@ public class WorldRenderer implements Disposable {
 
 		renderGuiExtraLive(batch);
 		// draw FPS text (anchored to bottom right edge)
+
+		if (GamePreferencesUtils.instance.showFpsCounter)
 		renderGuiFpsCounter(batch);
 
 		//draw game over screen
