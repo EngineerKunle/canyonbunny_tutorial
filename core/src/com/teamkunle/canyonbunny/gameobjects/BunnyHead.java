@@ -1,5 +1,7 @@
 package com.teamkunle.canyonbunny.gameobjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.teamkunle.canyonbunny.assets.Assets;
@@ -15,12 +17,12 @@ import com.teamkunle.canyonbunny.utils.GamePreferencesUtils;
 public class BunnyHead extends AbstractGameObject {
 
     public static final String TAG = BunnyHead.class.getSimpleName();
+    public ParticleEffect dustParticles = new ParticleEffect();
 
     private final float JUMP_TIME_MAX = 0.3F;
     private final float JUMP_TIME_MIN = 0.1F;
     private final float JUMP_TIME_OFFSET_FLYING = JUMP_TIME_MAX - 0.018f;
-
-
+    
     public enum VIEW_DIRECTION {
         LEFT, RIGHT
     }
@@ -47,6 +49,7 @@ public class BunnyHead extends AbstractGameObject {
     public void render(SpriteBatch sb) {
         TextureRegion reg = null;
 
+        dustParticles.draw(sb);
         sb.setColor(CharacterSkinHelper.values()[GamePreferencesUtils.instance.charSkin].getColor());
 
         // Set special color when game object
@@ -80,6 +83,8 @@ public class BunnyHead extends AbstractGameObject {
                 setFeatherPowerUp(false);
             }
         }
+
+        dustParticles.update(time);
     }
 
     @Override
@@ -92,6 +97,10 @@ public class BunnyHead extends AbstractGameObject {
         switch (jumpState) {
             case GROUNDED:
                 jumpState = JUMP_STATE.FALLING;
+                if (velocity.x != 0) {
+                    dustParticles.setPosition(position.x + dimension.x / 2, position.y);
+                    dustParticles.start();
+                }
                 break;
 
             case JUMP_RISING:
@@ -117,6 +126,7 @@ public class BunnyHead extends AbstractGameObject {
                 }
         }
         if (jumpState != JUMP_STATE.GROUNDED) {
+            dustParticles.allowCompletion();
             super.updateMotionY(deltaTime);
         }
     }
@@ -141,6 +151,9 @@ public class BunnyHead extends AbstractGameObject {
 
         hasFeatherPowerup = false;
         timeLeftFeatherPowerup = 0;
+
+        //dust particles
+        dustParticles.load(Gdx.files.internal("particles/dust.pfx"), Gdx.files.internal("particles"));
     }
 
     public void setFeatherPowerUp(boolean pickedUp) {

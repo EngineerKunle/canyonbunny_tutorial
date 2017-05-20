@@ -63,7 +63,24 @@ public class Clouds extends AbstractGameObject{
 			clouds.add(cloud);
 		}
 	}
-	
+
+	@Override
+	public void update(float time) {
+		super.update(time);
+
+		for (int i = clouds.size - 1; i >= 0; i--) {
+			Cloud cloud = clouds.get(i);
+			cloud.update(time);
+
+			if (cloud.position.x < -10) {
+				//cloud moved outside of world
+				//destroy and spawn new cloud at the end of level
+				clouds.removeIndex(i);
+				clouds.add(spawnCloud());
+			}
+		}
+	}
+
 	private Cloud spawnCloud(){
 		Cloud cloud = new Cloud();
 		cloud.dimension.set(dimension);
@@ -75,6 +92,11 @@ public class Clouds extends AbstractGameObject{
 		pos.y += 1.75; // base position
 		pos.y += MathUtils.random(0.0f, 0.2f) * (MathUtils.randomBoolean() ? 1 : -1); // random additional position
 		cloud.position.set(pos);
+
+		Vector2 speed = new Vector2();
+		speed.x += MathUtils.random(0.0f, 0.75f);
+		cloud.velocity.set(speed);
+
 		return cloud;
 	}
 	

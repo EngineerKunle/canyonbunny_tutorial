@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class CameraHelper {
 	private static final String TAG = CameraHelper.class.getSimpleName();
+	private final float FOLLOW_SPEED = 4.0f;
 	private final float MAX_ZOOM_IN = 0.25f;
 	private final float MAX_ZOOM_OUT = 10.0f;
 
@@ -20,6 +21,7 @@ public class CameraHelper {
 	
 	public void update(float time) {
 		if (!hasTarget()) return;
+		position.lerp(target.position, FOLLOW_SPEED * time);
 		position.x = target.position.x + target.origin.x;
 		position.y = target.position.y + target.origin.y;
 
