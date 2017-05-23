@@ -61,7 +61,7 @@ public class BunnyHead extends AbstractGameObject {
         reg = regHead;
         sb.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
                 rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
-                viewDirection == VIEW_DIRECTION.LEFT, false);
+                viewDirection == VIEW_DIRECTION.RIGHT, false);
 
         // Reset color to white
         sb.setColor(1, 1, 1, 1);
