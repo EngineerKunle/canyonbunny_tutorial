@@ -24,6 +24,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.helper.CharacterSkinHelper;
+import com.teamkunle.canyonbunny.screens.transitions.ScreenTransition;
+import com.teamkunle.canyonbunny.screens.transitions.ScreenTransitionFade;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
 import com.teamkunle.canyonbunny.utils.GamePreferencesUtils;
 
@@ -342,7 +344,8 @@ public class MenuScreen extends AbstractGameScreen {
     }
 
     private void onPlayClicked() {
-        game.setScreen(new GameScreen(game));
+        ScreenTransition transition = ScreenTransitionFade.init(0.75f);
+        game.setScreen(new GameScreen(game), transition);
     }
 
     private void onOptionsClicked() {

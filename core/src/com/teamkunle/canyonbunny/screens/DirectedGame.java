@@ -34,23 +34,22 @@ public class DirectedGame implements ApplicationListener {
 
     @Override
     public void render() {
-        //get delta time and ensure an upper limit of the second
         float deltaTime = Math.min(Gdx.graphics.getDeltaTime(), 1.0f / 60.0f);
         if (nextScreen == null) {
-            //no ongoing transition
+            // no ongoing transition
             if (currScreen != null) currScreen.render(deltaTime);
         } else {
             // ongoing transition
             float duration = 0;
-            if (screenTransition != null) currScreen.render(duration);
+            if (screenTransition != null) duration = screenTransition.getDuration();
             t = Math.min(t + deltaTime, duration);
             if (screenTransition == null || t >= duration) {
-                //no transition effect set or transition has just finished
+                // no transition effect set or transition has just finished
                 if (currScreen != null) currScreen.hide();
                 nextScreen.resume();
                 // enable input for next screen
                 Gdx.input.setInputProcessor(nextScreen.getInputProcessor());
-                //switch screen
+                // switch screens
                 currScreen = nextScreen;
                 nextScreen = null;
                 screenTransition = null;
@@ -64,8 +63,7 @@ public class DirectedGame implements ApplicationListener {
                 nextFBO.end();
                 // render transition effect to screen
                 float alpha = t / duration;
-                screenTransition.render(batch, currFBO.getColorBufferTexture(),
-                        nextFBO.getColorBufferTexture(), alpha);
+                screenTransition.render(batch, currFBO.getColorBufferTexture(), nextFBO.getColorBufferTexture(), alpha);
             }
         }
     }
