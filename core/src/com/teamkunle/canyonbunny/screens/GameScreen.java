@@ -2,6 +2,7 @@ package com.teamkunle.canyonbunny.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.teamkunle.canyonbunny.utils.GamePreferencesUtils;
 import com.teamkunle.canyonbunny.world.WorldController;
@@ -16,13 +17,18 @@ public class GameScreen extends AbstractGameScreen {
     private static final String TAG = GameScreen.class.getSimpleName();
     private WorldController worldController;
     private WorldRenderer worldRenderer;
-    private Game game;
+    private DirectedGame game;
 
     private boolean paused;
 
-    public GameScreen(Game game) {
+    public GameScreen(DirectedGame game) {
         super(game);
         this.game = game;
+    }
+
+    @Override
+    public InputProcessor getInputProcessor() {
+        return worldController;
     }
 
     @Override

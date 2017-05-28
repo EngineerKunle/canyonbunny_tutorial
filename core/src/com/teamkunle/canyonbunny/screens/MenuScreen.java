@@ -1,8 +1,8 @@
 package com.teamkunle.canyonbunny.screens;
 
 import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -65,7 +65,7 @@ public class MenuScreen extends AbstractGameScreen {
     private boolean debugEnabled = false;
     private float debugRebuildStage;
 
-    public MenuScreen(Game game) {
+    public MenuScreen(DirectedGame game) {
         super(game);
     }
 
@@ -94,7 +94,6 @@ public class MenuScreen extends AbstractGameScreen {
     @Override
     public void show() {
         stage = new Stage(new StretchViewport(ConstantUtils.VIEWPORT_GUI_WIDTH, ConstantUtils.VIEWPORT_GUI_HEIGHT));
-        Gdx.input.setInputProcessor(stage);
         rebuildStage();
     }
 
@@ -107,6 +106,11 @@ public class MenuScreen extends AbstractGameScreen {
 
     @Override
     public void pause() {
+    }
+
+    @Override
+    public InputProcessor getInputProcessor() {
+        return stage;
     }
 
     private void rebuildStage() {

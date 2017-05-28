@@ -5,9 +5,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.teamkunle.canyonbunny.assets.Assets;
+import com.teamkunle.canyonbunny.screens.AbstractGameScreen;
+import com.teamkunle.canyonbunny.screens.DirectedGame;
 import com.teamkunle.canyonbunny.screens.MenuScreen;
 
-public class Main extends Game {
+public class Main extends DirectedGame {
 
 	@Override
 	public void create() {
