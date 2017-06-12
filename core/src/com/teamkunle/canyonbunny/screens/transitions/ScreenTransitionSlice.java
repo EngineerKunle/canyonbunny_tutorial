@@ -57,7 +57,30 @@ public class ScreenTransitionSlice implements ScreenTransition {
         batch.draw(currentScreen, 0, 0, 0, 0, w, h, 1, 1, 0, 0, 0, currentScreen.getWidth(), currentScreen.getHeight(), false, true);
 
         if (easing != null) alpha = easing.apply(alpha);
-//        for()
 
+        for(int i = 0; i < sliceIndex.size; i++) {
+            // current slice down
+            x = i * sliceWidth;
+            float offsetY = h * (1 + sliceIndex.get(i) / (float) sliceIndex.size);
+
+            switch (direction) {
+                case UP:
+                    y = -offsetY + offsetY * alpha;
+                    break;
+                case DOWN:
+                    y = offsetY - offsetY * alpha;
+                    break;
+                case UP_DOWN:
+                    if (i % 2 == 0) {
+                        y = -offsetY + offsetY * alpha;
+                    } else {
+                        y = offsetY - offsetY * alpha;
+                    }
+                    break;
+            }
+            batch.draw(nextScreen, x, y, 0, 0, sliceWidth, h, 1, 1, 0, i * sliceWidth, 0, sliceWidth, nextScreen.getHeight(), false, true);
+        }
+
+        batch.end();
     }
 }

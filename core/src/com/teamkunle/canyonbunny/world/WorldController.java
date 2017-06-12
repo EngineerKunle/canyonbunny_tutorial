@@ -24,6 +24,7 @@ public class WorldController extends InputAdapter {
 	private DirectedGame game;
 	public CameraHelper cameraHelper;
 
+
 	public int lives;
 	public int score;
 	public Level level;
