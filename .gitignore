@@ -68,3 +68,7 @@ build/
 ## OS Specific
 .DS_Store
 Thumbs.db
+
+##Sounds and music
+*.wav
+*.mp3
