@@ -27,7 +27,7 @@ public class GamePreferencesUtils {
         preferences = Gdx.app.getPreferences(ConstantUtils.PREFERENCES);
     }
 
-    public void save() {
+    public void load() {
         sound = preferences.getBoolean("sound", true);
         music = preferences.getBoolean("music", true);
         volMusic = MathUtils.clamp(preferences.getFloat("volMusic", 0.5f), 0.0f, 1.0f);
@@ -35,7 +35,7 @@ public class GamePreferencesUtils {
         charSkin = MathUtils.clamp(preferences.getInteger("charSKin", 0), 0, 2);
         showFpsCounter = preferences.getBoolean("showFpsCounter", true);
     }
-    public void load() {
+    public void save() {
         preferences.putBoolean("sound", sound);
         preferences.putBoolean("music", music);
         preferences.putFloat("volMusic",volMusic);

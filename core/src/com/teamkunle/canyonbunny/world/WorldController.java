@@ -6,6 +6,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
+import com.teamkunle.canyonbunny.assets.Assets;
+import com.teamkunle.canyonbunny.audio.AudioManager;
 import com.teamkunle.canyonbunny.gameobjects.BunnyHead;
 import com.teamkunle.canyonbunny.gameobjects.Feather;
 import com.teamkunle.canyonbunny.gameobjects.GoldCoin;
@@ -84,6 +86,7 @@ public class WorldController extends InputAdapter {
 		cameraHelper.update(time);
 
 		if (!isGameOver() && isPlayerInWater()) {
+			AudioManager.instance.play(Assets.instance.assetsSounds.liveLost);
 			lives--;
 			if (isGameOver())
 				timeLeftGameOverDelay = ConstantUtils.TIME_DELAY_GAME_OVER;
@@ -183,11 +186,13 @@ public class WorldController extends InputAdapter {
 	}
 	private void onCollisonBunnyHeadWithGoldCoin(GoldCoin goldCoin) {
 		goldCoin.collected = true;
+		AudioManager.instance.play(Assets.instance.assetsSounds.pickUpCoin);
 		score += goldCoin.getScore();
 		Gdx.app.log(TAG, "Gold coin collected");
 	}
 	private void onCollisonBunnyHeadWithFeather(Feather feather) {
 		feather.collected = true;
+		AudioManager.instance.play(Assets.instance.assetsSounds.pickupFeather);
 		score += feather.getScore();
 		level.bunnyHead.setFeatherPowerUp(true);
 		Gdx.app.log(TAG, "feather collected");

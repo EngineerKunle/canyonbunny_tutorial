@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.teamkunle.canyonbunny.assets.Assets;
+import com.teamkunle.canyonbunny.audio.AudioManager;
 import com.teamkunle.canyonbunny.helper.CharacterSkinHelper;
 import com.teamkunle.canyonbunny.screens.transitions.ScreenTransition;
 import com.teamkunle.canyonbunny.screens.transitions.ScreenTransitionFade;
@@ -358,13 +359,17 @@ public class MenuScreen extends AbstractGameScreen {
     private void onSaveClicked() {
         saveSettings();
         onCancelClicked();
+        AudioManager.instance.onSettingsUpdated();
     }
 
     private void onCancelClicked() {
         btnMenuPlay.setVisible(true);
         btnMenuOptions.setVisible(true);
         winOptions.setVisible(false);
+        AudioManager.instance.onSettingsUpdated();
     }
+
+
 
     private void onCharSkinSelected(int index) {
         CharacterSkinHelper skin = CharacterSkinHelper.GRAY.values()[index];
@@ -377,6 +382,7 @@ public class MenuScreen extends AbstractGameScreen {
         chkSound.setChecked(prefs.sound);
         sldSound.setValue(prefs.volSound);
         chkMusic.setChecked(prefs.music);
+        sldMusic.setValue(prefs.volMusic);
         sldMusic.setValue(prefs.volMusic);
         selCharSkin.setSelectedIndex(prefs.charSkin);
         onCharSkinSelected(prefs.charSkin);
