@@ -36,6 +36,5 @@ public class Carrot extends AbstractGameObject {
                 scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false,
                 false);
 
-        //TODO: PAGE 341
     }
 }
