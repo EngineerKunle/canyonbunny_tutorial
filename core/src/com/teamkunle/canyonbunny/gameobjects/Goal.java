@@ -11,8 +11,6 @@ import com.teamkunle.canyonbunny.helper.AbstractGameObject;
 
 public class Goal extends AbstractGameObject {
 
-    //TODO: PAGE 341
-
     private TextureRegion regGoal;
 
     public Goal() {
@@ -24,11 +22,18 @@ public class Goal extends AbstractGameObject {
         regGoal = Assets.instance.levelDecoration.goal;
 
         // Set bounding for collision detection
+        bounds.set(1, Float.MIN_VALUE, 10, Float.MAX_VALUE);
+        origin.set(dimension.x / 2.0f, 0.0f);
 
     }
 
     @Override
     public void render(SpriteBatch sb) {
+        TextureRegion reg = null;
 
+        reg = regGoal;
+        sb.draw(reg.getTexture(), position.x - origin.x, position.y - origin.y, origin.x, origin.y, dimension.x, dimension.y,
+                scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false,
+                false);
     }
 }

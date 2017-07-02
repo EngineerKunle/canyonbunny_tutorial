@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.teamkunle.canyonbunny.gameobjects.BunnyHead;
+import com.teamkunle.canyonbunny.gameobjects.Carrot;
 import com.teamkunle.canyonbunny.gameobjects.Clouds;
 import com.teamkunle.canyonbunny.gameobjects.Feather;
+import com.teamkunle.canyonbunny.gameobjects.Goal;
 import com.teamkunle.canyonbunny.gameobjects.GoldCoin;
 import com.teamkunle.canyonbunny.gameobjects.Mountains;
 import com.teamkunle.canyonbunny.gameobjects.Rock;
@@ -17,22 +19,10 @@ public class Level {
 	//page 179
 	
 	public static final String TAG = Level.class.getSimpleName();
-
-	//objects
-	public Array<Rock> rocks;
-	public Clouds clouds;
-	public Mountains mountains;
-	public WaterOverlay waterOverlay;
-
-	//player character
-	public BunnyHead bunnyHead;
-
-	public Array<GoldCoin> goldCoins;
-	public Array<Feather> feathers;
-
 	
 	public enum BLOCK_TYPE {
 		EMPTY(0, 0, 0), //BLACK
+		GOAL(255, 0, 0), //RED
 		ROCK(0, 255, 0), //GREEN
 		PLAYER_SPAWNPOINT(255, 255, 255), //white
 		ITEM_FEATHER(255, 0, 255), // purple
@@ -52,6 +42,21 @@ public class Level {
 			return color;
 		}
 	}
+
+    //objects
+    public Array<Rock> rocks;
+    public Array<Carrot> carrots;
+
+    public Goal goal;
+    public Clouds clouds;
+    public Mountains mountains;
+    public WaterOverlay waterOverlay;
+
+    //player character
+    public BunnyHead bunnyHead;
+
+    public Array<GoldCoin> goldCoins;
+    public Array<Feather> feathers;
 	
 	public Level(String filename) {
 		init(filename);
@@ -65,6 +70,7 @@ public class Level {
 		rocks = new Array<Rock>();
 		goldCoins = new Array<GoldCoin>();
 		feathers = new Array<Feather>();
+		carrots = new Array<Carrot>();
 
 		Pixmap pixmap = new Pixmap(Gdx.files.internal(filename));
 		int lastPixel = -1;
@@ -90,7 +96,6 @@ public class Level {
 						rocks.get(rocks.size - 1).increaseLength(1);
 					}
 				}
-				
 				// player spawn point
 				else if (BLOCK_TYPE.PLAYER_SPAWNPOINT.sameColor(currentPixel)) {
 					obj = new BunnyHead();
@@ -112,6 +117,15 @@ public class Level {
 					obj.position.set(pixelX, baseHeight * obj.dimension.y + offsetHeight);
 					goldCoins.add((GoldCoin) obj);
 				}
+
+                //goal
+                else if (BLOCK_TYPE.GOAL.sameColor(currentPixel)) {
+                    obj = new Goal();
+                    offsetHeight = -7.0f;
+                    obj.position.set(pixelX, baseHeight + offsetHeight);
+                    goal = (Goal) obj;
+                }
+
 				// unknown object/pixel color
 				else {
 					// red color channel
@@ -143,6 +157,7 @@ public class Level {
 	public void render(SpriteBatch sb){
 		
 		mountains.render(sb);
+        goal.render(sb);
 		for (Rock rock : rocks){
 			rock.render(sb);
 		}
@@ -152,6 +167,9 @@ public class Level {
 		for (Feather feather : feathers) {
 			feather.render(sb);
 		}
+        for (Carrot carrot : carrots) {
+            carrot.render(sb);
+        }
 		bunnyHead.render(sb);
 		waterOverlay.render(sb);
 		clouds.render(sb);
@@ -170,6 +188,10 @@ public class Level {
 		for (Feather feather : feathers) {
 			feather.update(deltaTime);
 		}
+
+		for (Carrot carrot : carrots) {
+            carrot.update(deltaTime);
+        }
 	}
 	
 }

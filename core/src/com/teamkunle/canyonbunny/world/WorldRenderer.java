@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Disposable;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
@@ -17,6 +18,7 @@ public class WorldRenderer implements Disposable {
 	private OrthographicCamera cameraGUI;
 	private SpriteBatch spriteBatch;
 	private WorldController wc;
+	private Box2DDebugRenderer box2DDebugRenderer;
 
 	public WorldRenderer(WorldController wc){
 		this.wc = wc;
@@ -34,6 +36,8 @@ public class WorldRenderer implements Disposable {
 		cameraGUI.position.set(0, 0, 0);
 		cameraGUI.setToOrtho(true);
 		cameraGUI.update();
+
+        box2DDebugRenderer = new Box2DDebugRenderer();
 	}
 	
 	public void render(){
@@ -47,6 +51,10 @@ public class WorldRenderer implements Disposable {
 		sb.begin();
 		wc.level.render(sb);
 		sb.end();
+
+        if (ConstantUtils.DEBUG_DRAW_BOX2D_WORLD) {
+            box2DDebugRenderer.render(wc.b2World, camera.combined);
+        }
 	}
 
 	public void resize(int width, int height){

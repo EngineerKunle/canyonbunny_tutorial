@@ -5,10 +5,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.audio.AudioManager;
 import com.teamkunle.canyonbunny.gameobjects.BunnyHead;
+import com.teamkunle.canyonbunny.gameobjects.Carrot;
 import com.teamkunle.canyonbunny.gameobjects.Feather;
 import com.teamkunle.canyonbunny.gameobjects.GoldCoin;
 import com.teamkunle.canyonbunny.gameobjects.Rock;
@@ -22,16 +30,20 @@ import com.teamkunle.canyonbunny.utils.ConstantUtils;
 
 public class WorldController extends InputAdapter {
 	private static final String TAG = WorldController.class.getSimpleName();
-	private float timeLeftGameOverDelay;
+
 	private DirectedGame game;
 	public CameraHelper cameraHelper;
-
+	public Level level;
 
 	public int lives;
 	public int score;
-	public Level level;
 	public float livesVisual;
 	public float scoreVisual;
+
+	public World b2World;
+
+	private boolean goalReached;
+	private float timeLeftGameOverDelay;
 
 	//Rectangles for collisions
 	private Rectangle r1 = new Rectangle();
@@ -71,6 +83,30 @@ public class WorldController extends InputAdapter {
 		livesVisual = lives;
 		timeLeftGameOverDelay = 0;
 		initLevel();
+		initPhysics();
+	}
+
+	private void initPhysics() {
+		if (b2World != null) b2World.dispose();
+		b2World = new World(new Vector2(0, -9.81f), true);
+
+		//Rocks
+		Vector2 origin = new Vector2();
+		for (Rock rock : level.rocks) {
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.type = BodyDef.BodyType.KinematicBody;
+			bodyDef.position.set(rock.position);
+			Body body = b2World.createBody(bodyDef);
+			rock.body = body;
+			PolygonShape polygonShape = new PolygonShape();
+			origin.x = rock.bounds.width / 2.0f;
+			origin.y = rock.bounds.height / 2.0f;
+			polygonShape.setAsBox(rock.bounds.width / 2.0f, rock.bounds.height / 2.0f, origin, 0);
+			FixtureDef fixture = new FixtureDef();
+			fixture.shape = polygonShape;
+			body.createFixture(fixture);
+			polygonShape.dispose();
+		}
 	}
 
 	public void update(float time){
@@ -237,5 +273,45 @@ public class WorldController extends InputAdapter {
 	private void backToMenu() {
 		ScreenTransition screenTransition = ScreenTransitionSlide.init(0.75f, ScreenTransitionSlide.UP, false, Interpolation.bounce);
 		game.setScreen(new MenuScreen(game), screenTransition);
+	}
+
+	private void spawnCarrots(Vector2 pos, int numCarrots, float radius){
+		float carrotShapeScale = 0.5f;
+
+		// calculate carrots with box2d boday and fixture
+		for (int i = 0; i < numCarrots; i++) {
+			Carrot carrot = new Carrot();
+			// calculate random spawn position, rotation, and scale
+			float x = MathUtils.random(-radius, radius);
+			float y = MathUtils.random(5.0f, 15.0f);
+			float rotation = MathUtils.random(0.0f, 360.0f) * MathUtils.degreesToRadians;
+			float carrotScale = MathUtils.random(0.5f, 1.5f);
+			carrot.scale.set(carrotScale, carrotScale);
+			// create box2d body for carrot with start position
+			// and angle of rotation
+			BodyDef bodyDef = new BodyDef();
+			bodyDef.position.set(pos);
+			bodyDef.position.add(x, y);
+			bodyDef.angle = rotation;
+			Body body = b2World.createBody(bodyDef);
+			body.setType(BodyDef.BodyType.DynamicBody);
+			carrot.body = body;
+			// create rectangular shape for carrot to allow
+			// interactions (collisions) with other objects
+			PolygonShape polygonShape = new PolygonShape();
+			float halfWidth = carrot.bounds.width / 2.0f * carrotScale;
+			float halfHeight = carrot.bounds.height / 2.0f * carrotScale;
+			polygonShape.setAsBox(halfWidth * carrotShapeScale, halfHeight * carrotShapeScale);
+			// set physics attributes
+			FixtureDef fixtureDef = new FixtureDef();
+			fixtureDef.shape = polygonShape;
+			fixtureDef.density = 50;
+			fixtureDef.restitution = 0.5f;
+			fixtureDef.friction = 0.5f;
+			body.createFixture(fixtureDef);
+			polygonShape.dispose();
+			// finally, add new carrot to list for updating/rendering
+			level.carrots.add(carrot);
+		}
 	}
 }
