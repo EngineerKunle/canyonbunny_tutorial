@@ -111,7 +111,7 @@ public class WorldController extends InputAdapter {
 
 	public void update(float time){
 		handleDebugInput(time);
-		if (isGameOver()) {
+		if (isGameOver() || goalReached) {
 			timeLeftGameOverDelay -= time;
 			if (timeLeftGameOverDelay < 0 ) backToMenu();
 		} else {
@@ -119,6 +119,7 @@ public class WorldController extends InputAdapter {
 		}
 		level.update(time);
 		testCollisions();
+		b2World.step(time, 8, 3);
 		cameraHelper.update(time);
 
 		if (!isGameOver() && isPlayerInWater()) {
@@ -184,6 +185,7 @@ public class WorldController extends InputAdapter {
 		scoreVisual = score;
 		level = new Level(ConstantUtils.LEVEL_01);
 		cameraHelper.setTarget(level.bunnyHead);
+		initPhysics();
 	}
 	
 	private void moveCamera(float x, float y){
@@ -260,6 +262,20 @@ public class WorldController extends InputAdapter {
 			onCollisonBunnyHeadWithGoldCoin(goldCoin);
 			break;
 		}
+
+		if (!goalReached) {
+			r2.set(level.goal.bounds);
+			r2.x = level.goal.position.x;
+			r2.y = level.goal.position.y;
+			if (r1.overlaps(r2)) onCollisionBunnyWithGoal();
+		}
+	}
+
+	private void onCollisionBunnyWithGoal() {
+		goalReached = true;
+		timeLeftGameOverDelay = ConstantUtils.TIME_DELAY_GAME_FINISHED;
+		Vector2 centerPosBunnyHead = new Vector2(level.bunnyHead.position);
+		spawnCarrots(centerPosBunnyHead, ConstantUtils.CARROTS_SPAWN_MAX, ConstantUtils.CARROTS_SPAWN_RADIUS);
 	}
 
 	public boolean isGameOver() {
