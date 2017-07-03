@@ -1,6 +1,5 @@
 package com.teamkunle.canyonbunny.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
@@ -57,6 +56,7 @@ public class GameScreen extends AbstractGameScreen {
 
     @Override
     public void hide() {
+        worldController.dispose();
         worldRenderer.dispose();
         Gdx.input.setCatchBackKey(false);
     }

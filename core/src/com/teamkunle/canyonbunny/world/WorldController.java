@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Disposable;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.audio.AudioManager;
 import com.teamkunle.canyonbunny.gameobjects.BunnyHead;
@@ -28,7 +29,7 @@ import com.teamkunle.canyonbunny.screens.transitions.ScreenTransitionSlide;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
 
 
-public class WorldController extends InputAdapter {
+public class WorldController extends InputAdapter implements Disposable {
 	private static final String TAG = WorldController.class.getSimpleName();
 
 	private DirectedGame game;
@@ -329,5 +330,10 @@ public class WorldController extends InputAdapter {
 			// finally, add new carrot to list for updating/rendering
 			level.carrots.add(carrot);
 		}
+	}
+
+	@Override
+	public void dispose() {
+		if (b2World != null) b2World.dispose();
 	}
 }
