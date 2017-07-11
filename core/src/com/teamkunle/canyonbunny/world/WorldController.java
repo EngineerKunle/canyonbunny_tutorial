@@ -2,6 +2,7 @@ package com.teamkunle.canyonbunny.world;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Interpolation;
@@ -44,7 +45,10 @@ public class WorldController extends InputAdapter implements Disposable {
 	public World b2World;
 
 	private boolean goalReached;
+    private boolean accelerometerAvaliable;
 	private float timeLeftGameOverDelay;
+
+
 
 	//Rectangles for collisions
 	private Rectangle r1 = new Rectangle();
@@ -79,6 +83,7 @@ public class WorldController extends InputAdapter implements Disposable {
 	}
 	
 	private void init() {
+        accelerometerAvaliable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
 		cameraHelper = new CameraHelper();
 		lives = ConstantUtils.LIVES_START;
 		livesVisual = lives;
@@ -169,11 +174,22 @@ public class WorldController extends InputAdapter implements Disposable {
 			} else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 				level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
 			} else {
-				if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
-					level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
-				}
-			}
+				if (accelerometerAvaliable) {
+                    float amount = Gdx.input.getAccelerometerY() / 10.0f;
+                    amount *= 90.0f;
 
+                    if (Math.abs(amount) < ConstantUtils.ACCEL_ANGEL_DEAD_ZONE) {
+                        amount = 0;
+                    } else {
+                        amount /= ConstantUtils.ACCEL_MAX_ANGLE_MAX_MOVEMENT;
+                    }
+                    level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x * amount;
+
+                } else if (Gdx.app.getType() != Application.ApplicationType.Desktop) {
+                    level.bunnyHead.velocity.x = level.bunnyHead.terminalVelocity.x;
+                }
+			}
+			//bunny jump
 			if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Keys.SPACE))
 				level.bunnyHead.setJumping(true);
 			else

@@ -42,9 +42,6 @@ public class WorldRenderer implements Disposable {
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
-		boolean filesExist = Gdx.files.internal(ConstantUtils.SHADER_MONO_CHROME_VETEX).exists();
-
-        Gdx.app.log(WorldRenderer.class.getSimpleName(), "the file exist " + filesExist);
         shaderMonoschrome = new ShaderProgram(Gdx.files.internal(ConstantUtils.SHADER_MONO_CHROME_VETEX),
                 Gdx.files.internal(ConstantUtils.SHADER_MONO_CHROME_FRAGEMENT));
         if (!shaderMonoschrome.isCompiled()) {

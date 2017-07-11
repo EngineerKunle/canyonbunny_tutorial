@@ -32,7 +32,7 @@ public class ConstantUtils {
 	/*Gui width and height*/
 	public static final float VIEWPORT_GUI_WIDTH = 800.0f;
 	public static final float VIEWPORT_GUI_HEIGHT = 480.0f;
-	
+
 	/*Amount of lives begin*/
 	public static final int LIVES_START = 3;
 
@@ -60,6 +60,11 @@ public class ConstantUtils {
 	/*Shader effect*/
     public static final String SHADER_MONO_CHROME_VETEX = "shaders/monochrome.vs";
     public static final String SHADER_MONO_CHROME_FRAGEMENT = "shaders/monochrome.fs";
-//	public static final String shaderMonochromeVertex = "shaders/monochrome.vs";
-//	public static final String shaderMonochromeFragment = "shaders/monochrome.fs";
+
+	//Angle of rotation for dead zone (no movement)
+    public static final float ACCEL_ANGEL_DEAD_ZONE = 5.0F;
+
+    // Max angel of rotation needed to gain maximum movement velocity
+    public static final float ACCEL_MAX_ANGLE_MAX_MOVEMENT = 20.0f;
+
 }
