@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
 import com.teamkunle.canyonbunny.utils.GamePreferencesUtils;
@@ -19,6 +21,7 @@ public class WorldRenderer implements Disposable {
 	private SpriteBatch spriteBatch;
 	private WorldController wc;
 	private Box2DDebugRenderer box2DDebugRenderer;
+	private ShaderProgram shaderMonoschrome;
 
 	public WorldRenderer(WorldController wc){
 		this.wc = wc;
@@ -38,18 +41,34 @@ public class WorldRenderer implements Disposable {
 		cameraGUI.update();
 
         box2DDebugRenderer = new Box2DDebugRenderer();
+
+		boolean filesExist = Gdx.files.internal(ConstantUtils.SHADER_MONO_CHROME_VETEX).exists();
+
+        Gdx.app.log(WorldRenderer.class.getSimpleName(), "the file exist " + filesExist);
+        shaderMonoschrome = new ShaderProgram(Gdx.files.internal(ConstantUtils.SHADER_MONO_CHROME_VETEX),
+                Gdx.files.internal(ConstantUtils.SHADER_MONO_CHROME_FRAGEMENT));
+        if (!shaderMonoschrome.isCompiled()) {
+            throw new GdxRuntimeException("Could not compile shader program: " + shaderMonoschrome.getLog());
+        }
 	}
-	
+
 	public void render(){
 		renderWorld(spriteBatch);
 		renderGUI(spriteBatch);
 	}
-	
+
 	private void renderWorld(SpriteBatch sb){
 		wc.cameraHelper.applyTo(camera);
 		sb.setProjectionMatrix(camera.combined);
 		sb.begin();
+
+        if (GamePreferencesUtils.instance.useMonochromeShader) {
+            sb.setShader(shaderMonoschrome);
+            shaderMonoschrome.setUniformf("u_amount", 1.0f);
+        }
+
 		wc.level.render(sb);
+        sb.setShader(null);
 		sb.end();
 
         if (ConstantUtils.DEBUG_DRAW_BOX2D_WORLD) {
@@ -60,7 +79,7 @@ public class WorldRenderer implements Disposable {
 	public void resize(int width, int height){
 		camera.viewportWidth = (ConstantUtils.VIEWPORT_HEIGHT / height) * width;
 		camera.update();
-		
+
 		cameraGUI.viewportHeight = ConstantUtils.VIEWPORT_GUI_HEIGHT;
 		cameraGUI.viewportWidth = (ConstantUtils.VIEWPORT_GUI_HEIGHT / (float)height) * (float)width;
 		cameraGUI.position.set(cameraGUI.viewportWidth / 2, cameraGUI.viewportHeight / 2, 0);
@@ -178,6 +197,7 @@ public class WorldRenderer implements Disposable {
 	@Override
 	public void dispose() {
 		spriteBatch.dispose();
+        shaderMonoschrome.dispose();
 	}
 
 }

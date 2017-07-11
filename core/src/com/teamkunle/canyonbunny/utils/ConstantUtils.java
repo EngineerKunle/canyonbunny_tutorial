@@ -57,4 +57,9 @@ public class ConstantUtils {
     /*Delay after game finished*/
     public static final float TIME_DELAY_GAME_FINISHED = 6;
 
+	/*Shader effect*/
+    public static final String SHADER_MONO_CHROME_VETEX = "shaders/monochrome.vs";
+    public static final String SHADER_MONO_CHROME_FRAGEMENT = "shaders/monochrome.fs";
+//	public static final String shaderMonochromeVertex = "shaders/monochrome.vs";
+//	public static final String shaderMonochromeFragment = "shaders/monochrome.fs";
 }
