@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -386,6 +388,32 @@ public class MenuScreen extends AbstractGameScreen {
     }
 
 
+    private void showMenuButtons(boolean visible) {
+        float moveDuration = 1.0f;
+        Interpolation moveEasing = Interpolation.swing;
+        float delayOptionsButton = 0.25f;
+
+        float moveX = 300 * (visible ? 1 : -1);
+        float moveY = 0 * (visible ? -1 : 1);
+        final Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+
+        btnMenuPlay.addAction(moveBy(moveX, moveY, moveDuration, moveEasing));
+        btnMenuOptions.addAction(sequence(delay(delayOptionsButton),
+                moveBy(moveX, moveY, moveDuration, moveEasing)));
+
+        SequenceAction seq = new SequenceAction();
+
+        if (visible) {
+            seq.addAction(delay(delayOptionsButton + moveDuration));
+            seq.addAction(run(new Runnable() {
+                public void run() {
+                    btnMenuPlay.setTouchable(touchEnabled);
+                    btnMenuOptions.setTouchable(touchEnabled);
+                }
+            }));
+            stage.addAction(seq);
+        }
+    }
 
     private void onCharSkinSelected(int index) {
         CharacterSkinHelper skin = CharacterSkinHelper.GRAY.values()[index];
