@@ -33,7 +33,16 @@ import com.teamkunle.canyonbunny.screens.transitions.ScreenTransitionFade;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
 import com.teamkunle.canyonbunny.utils.GamePreferencesUtils;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.touchable;
 
 public class MenuScreen extends AbstractGameScreen {
 
@@ -351,7 +360,7 @@ public class MenuScreen extends AbstractGameScreen {
         // Make options window slightly transparent
         winOptions.setColor(1, 1, 1, 0.8f);
         // Hide options window by default
-        winOptions.setVisible(false);
+        showOptionsWindow(false, false);
         if (debugEnabled)
             winOptions.debug();
         // Let TableLayout recalculate widget sizes and positions
@@ -369,9 +378,8 @@ public class MenuScreen extends AbstractGameScreen {
 
     private void onOptionsClicked() {
         loadSettings();
-        btnMenuPlay.setVisible(false);
-        btnMenuOptions.setVisible(false);
-        winOptions.setVisible(true);
+        showMenuButtons(false);
+        showOptionsWindow(true, true);
     }
 
     private void onSaveClicked() {
@@ -381,12 +389,10 @@ public class MenuScreen extends AbstractGameScreen {
     }
 
     private void onCancelClicked() {
-        btnMenuPlay.setVisible(true);
-        btnMenuOptions.setVisible(true);
-        winOptions.setVisible(false);
+        showMenuButtons(true);
+        showOptionsWindow(false, true);
         AudioManager.instance.onSettingsUpdated();
     }
-
 
     private void showMenuButtons(boolean visible) {
         float moveDuration = 1.0f;
@@ -413,6 +419,14 @@ public class MenuScreen extends AbstractGameScreen {
             }));
             stage.addAction(seq);
         }
+    }
+
+    private void showOptionsWindow(boolean visible, boolean animated) {
+        float alphaTo = visible ? 0.8f : 0.0f;
+        float duration = animated ? 1.0f : 0.0f;
+        Touchable touchEnabled = visible ? Touchable.enabled : Touchable.disabled;
+
+        winOptions.addAction(sequence(touchable(touchEnabled), alpha(alphaTo, duration)));
     }
 
     private void onCharSkinSelected(int index) {
@@ -445,5 +459,4 @@ public class MenuScreen extends AbstractGameScreen {
         prefs.useMonochromeShader = chkUseMonoChromeShader.isChecked();
         prefs.save();
     }
-
 }
