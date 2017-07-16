@@ -1,6 +1,7 @@
 package com.teamkunle.canyonbunny.helper;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.model.Animation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,6 +24,9 @@ public abstract class AbstractGameObject {
 
 	public float rotation;
 
+    public float statetime;
+    public Animation animation;
+
 	public AbstractGameObject() {
 		position = new Vector2();
 		dimension = new Vector2(1,1);
@@ -37,7 +41,7 @@ public abstract class AbstractGameObject {
 	}
 	
 	public void update(float time) {
-
+        statetime += time;
         if (body == null) {
             updateMotionX(time);
             updateMotionY(time);
@@ -82,5 +86,10 @@ public abstract class AbstractGameObject {
         // Make sure the object's velocity does not exceed the
         // positive or negative terminal velocity
         velocity.y = MathUtils.clamp(velocity.y, -terminalVelocity.y, terminalVelocity.y);
+    }
+
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
+        statetime = 0;
     }
 }

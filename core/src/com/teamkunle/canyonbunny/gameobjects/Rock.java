@@ -48,8 +48,6 @@ public class Rock extends AbstractGameObject{
 	public void update(float time) {
 		super.update(time);
 
-        //TODO: page 354 please read the whole page
-
 		floatCycleTimeLeft -= time;
 		if (floatCycleTimeLeft <= 0) {
             floatCycleTimeLeft = FLOAT_CYCLE_TIME;

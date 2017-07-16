@@ -17,6 +17,8 @@ public class Main extends DirectedGame {
 
 	private ScreenTransition transition;
 
+	//TODO : left it at page 385
+
 	@Override
 	public void create() {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);

@@ -8,9 +8,11 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.teamkunle.canyonbunny.utils.ConstantUtils;
 
@@ -37,9 +39,37 @@ public class Assets implements Disposable, AssetErrorListener {
 	
 	public class AssetBunny {
 		public final AtlasRegion head;
+        public final Animation animNormal;
+        public final Animation animCopterTransform;
+        public final Animation animCopterTransformBack;
+        public final Animation animCopterRotate;
 
 		public AssetBunny (TextureAtlas atlas) {
+            final float frames = 1.0f / 10.0f;
+            final float framesLonger = 1.0f / 15.0f;
 			head = atlas.findRegion("bunny_head");
+
+            Array<AtlasRegion> regions = null;
+            AtlasRegion region = null;
+
+            //Animation : Bunny Normal
+            regions = atlas.findRegions("anim_bunny_normal");
+            animNormal = new Animation(frames, regions, Animation.PlayMode.LOOP_PINGPONG);
+
+            //Animation : Bunny Copter - knot ears
+            regions = atlas.findRegions("anim_bunny_copter");
+            animCopterTransform = new Animation(frames, regions);
+
+            //Animation : Bunny Copter - un-knot ears
+            regions = atlas.findRegions("anim_bunny_copter");
+            animCopterTransformBack = new Animation(frames, regions, Animation.PlayMode.REVERSED);
+
+            //Animation : Bunny Copter - rotate ears
+            regions = new Array<AtlasRegion>();
+            regions.add(atlas.findRegion("anim_bunny_copter", 4));
+            regions.add(atlas.findRegion("anim_bunny_copter", 5));
+            animCopterRotate = new Animation(framesLonger, regions);
+
 		}
 	}
 
@@ -55,9 +85,19 @@ public class Assets implements Disposable, AssetErrorListener {
 
 	public class AssetGoldCoin {
 		public final AtlasRegion goldCoin;
+		public final Animation animGoldCoin;
 
 		public AssetGoldCoin (TextureAtlas atlas) {
 			goldCoin = atlas.findRegion("item_gold_coin");
+            final float frames = 1.0f / 20f;
+
+            //Animation Gold Coin
+            Array<AtlasRegion> regions = atlas.findRegions("anim_gold_coin");
+            AtlasRegion region = regions.first();
+            for (int i = 0; i < 10; i++) {
+                regions.insert(0, region);
+            }
+            animGoldCoin = new Animation(frames, regions, Animation.PlayMode.LOOP_PINGPONG);
 		}
 	}
 
