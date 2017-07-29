@@ -456,7 +456,8 @@ public class MenuScreen extends AbstractGameScreen {
         prefs.volMusic = sldMusic.getValue();
         prefs.charSkin = selCharSkin.getSelectedIndex();
         prefs.showFpsCounter = chkShowFpsCounter.isChecked();
-        prefs.useMonochromeShader = chkUseMonoChromeShader.isChecked();
+//        prefs.useMonochromeShader = chkUseMonoChromeShader.isChecked(); This is to stop the grey shader when game start
+        prefs.useMonochromeShader = false;
         prefs.save();
     }
 }
