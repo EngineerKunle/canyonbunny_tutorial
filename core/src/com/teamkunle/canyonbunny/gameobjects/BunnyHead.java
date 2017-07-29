@@ -1,6 +1,7 @@
 package com.teamkunle.canyonbunny.gameobjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -43,27 +44,35 @@ public class BunnyHead extends AbstractGameObject {
     public boolean hasFeatherPowerup;
     public float timeLeftFeatherPowerup;
 
+    //Animations
+    private Animation animNormal;
+    private Animation animCopterTransform;
+    private Animation animCopterTransformBack;
+    private Animation animCopterRotate;
+
     public BunnyHead() {
         init();
     }
 
     @Override
     public void render(SpriteBatch sb) {
-        TextureRegion reg = null;
+        TextureRegion reg;
+        float dimCorrectionX = 0;
+        float dimCorrectionY = 0;
 
         dustParticles.draw(sb);
         sb.setColor(CharacterSkinHelper.values()[GamePreferencesUtils.instance.charSkin].getColor());
 
-        // Set special color when game object
-        if (hasFeatherPowerup) {
-            sb.setColor(1.0f, 0.8f, 0.0f, 1.0f);
+        if (animation != animNormal) {
+            dimCorrectionX = 0.05f;
+            dimCorrectionY = 0.2f;
         }
 
-        //Draw image
-        reg = regHead;
-        sb.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
-                rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(),
-                viewDirection == VIEW_DIRECTION.RIGHT, false);
+        reg = (TextureRegion) animation.getKeyFrame(statetime, true);
+
+        sb.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x + dimCorrectionX, dimension.y
+                        + dimCorrectionY, scale.x, scale.y, rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(),
+                reg.getRegionHeight(), viewDirection == VIEW_DIRECTION.LEFT, false);
 
         // Reset color to white
         sb.setColor(1, 1, 1, 1);
@@ -78,15 +87,36 @@ public class BunnyHead extends AbstractGameObject {
         }
 
         if (timeLeftFeatherPowerup > 0) {
+
+            if (animation == animCopterTransformBack) {
+                setAnimation(animCopterTransform);
+            }
+
             timeLeftFeatherPowerup -= time;
             if (timeLeftFeatherPowerup < 0) {
                 //disable power-up
                 timeLeftFeatherPowerup = 0;
                 setFeatherPowerUp(false);
+                setAnimation(animCopterTransformBack);
             }
         }
 
         dustParticles.update(time);
+        //change the state according to feather power up
+        if (hasFeatherPowerup) {
+            if (animation == animNormal) {
+                setAnimation(animCopterTransform);
+            } else if (animation == animCopterTransform) {
+                if (animation.isAnimationFinished(statetime))
+                    setAnimation(animCopterRotate);
+            }
+        } else {
+            if (animation == animCopterRotate) {
+                if (animation.isAnimationFinished(statetime)) setAnimation(animCopterTransformBack);
+            } else if (animation == animCopterTransformBack) {
+                if (animation.isAnimationFinished(statetime)) setAnimation(animNormal);
+            }
+        }
     }
 
     @Override
@@ -135,6 +165,14 @@ public class BunnyHead extends AbstractGameObject {
 
     private void init() {
         dimension.set(1, 1);
+
+        animNormal              = Assets.instance.bunny.animNormal;
+        animCopterTransform     = Assets.instance.bunny.animCopterTransform;
+        animCopterTransformBack = Assets.instance.bunny.animCopterTransformBack;
+        animCopterRotate        = Assets.instance.bunny.animCopterRotate;
+
+        setAnimation(animNormal);
+
         regHead = Assets.instance.bunny.head;
 
         //center image on game object

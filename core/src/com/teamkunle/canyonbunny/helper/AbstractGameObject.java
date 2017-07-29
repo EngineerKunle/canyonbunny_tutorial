@@ -25,7 +25,7 @@ public abstract class AbstractGameObject {
 	public float rotation;
 
     public float statetime;
-    public Animation animation;
+    protected Animation animation;
 
 	public AbstractGameObject() {
 		position = new Vector2();
