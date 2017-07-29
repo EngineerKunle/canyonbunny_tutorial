@@ -2,6 +2,7 @@ package com.teamkunle.canyonbunny.gameobjects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.teamkunle.canyonbunny.assets.Assets;
 import com.teamkunle.canyonbunny.helper.AbstractGameObject;
 
@@ -12,7 +13,6 @@ import com.teamkunle.canyonbunny.helper.AbstractGameObject;
 public class GoldCoin extends AbstractGameObject {
 
     private static final int SCORE_COIN = 100;
-    private TextureRegion regGoldCoin;
 
     public boolean collected;
 
@@ -22,7 +22,10 @@ public class GoldCoin extends AbstractGameObject {
 
     private void init() {
         dimension.set(0.5f, 0.5f);
-        regGoldCoin = Assets.instance.goldCoin.goldCoin;
+
+        setAnimation(Assets.instance.goldCoin.animGoldCoin);
+        statetime = MathUtils.random(0.0f, 1.0f);
+
         bounds.set(0, 0, dimension.x, dimension.y);
         collected = false;
     }
@@ -32,7 +35,7 @@ public class GoldCoin extends AbstractGameObject {
         if (collected) return;
 
         TextureRegion reg = null;
-        reg = regGoldCoin;
+        reg = (TextureRegion) animation.getKeyFrame(statetime, true);
 
         sb.draw(reg.getTexture(), position.x, position.y, origin.x, origin.y, dimension.x, dimension.y, scale.x, scale.y,
                 rotation, reg.getRegionX(), reg.getRegionY(), reg.getRegionWidth(), reg.getRegionHeight(), false, false);
